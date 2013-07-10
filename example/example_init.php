@@ -1,0 +1,5 @@
+<?
+
+$GLOBALS['initialized'] = true;
+
+?>

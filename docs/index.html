@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html><head>
+	<title>phptestr</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+	<link rel="stylesheet" href="jsdocgen-default/jsdocgen-default.css" />
+	<script type="text/javascript" src="jsdocgen-default/jsdocgen-default.js"></script>
+
+
+
+
+</head><body>
+
+<script type="template/docviewjs" id="tmpl-loading-indicator">
+	<Label class="jsdocgen LoadingIndicator">
+		<Spinner class="Img" />;
+		<Txt text="{str.app.loading}" />
+	</Label>
+</script>
+
+<!-- main -->
+<script type="text/javascript">
+	
+	"use strict";
+
+	// application resources
+	var R = new Config( DocBlockViewer.Locale.EN );
+	R = new Config( {
+		str: {
+			app: {
+				title: document.title,
+				subtitle: "Unitest framework and GUI for PHP" || R.get( 'str.app.subtitle' )
+			}
+		}
+	}, R );
+
+	(function () {
+
+		var _loading = null;
+		var _loadingTimeOut = null;
+		var _appView = null;
+
+		function _showSpinner ( timeout ) {
+			if ( _loadingTimeOut !== null ) {
+				return;
+			}
+			else if ( _loading == null ) {
+				_loading = $T( 'tmpl-loading-indicator' );
+			}
+
+			_loadingTimeOut = setTimeout( function () {
+				_appView.addView( _loading );
+				_loadingTimeOut = null;
+			}, timeout || 1500 );
+		}
+
+		function _hideSpinner () {
+			if ( _loadingTimeOut === null ) {
+				_appView.removeView( _loading );
+			}
+			else {
+				clearTimeout( _loadingTimeOut );
+				_loadingTimeOut = null;
+			}
+		}
+
+		var _app = new App( function ( app ) {
+
+			function main () {
+				_appView = new View.AppView();
+				_appView.setClass( 'jsdocgen' );
+				_appView.setText( '{str.app.title}' );
+				var docviewer = new DocBlockViewer( {
+					DocsLocation: 'docs/',
+					Lang: 'php'
+				} );
+				
+				if ( !location.href.startsWith( 'file:///' ) ) {
+					_showSpinner( 1 );
+				}
+				
+				docviewer.once( 'DocBlockViewer.Loaded', function () {
+					docviewer.addEventListener( 'DocBlockViewer.Loading', _showSpinner );
+					docviewer.addEventListener( 'DocBlockViewer.Loaded', _hideSpinner );
+					_hideSpinner();
+				} );
+
+				_appView.addView( docviewer );
+				docviewer.init( R.get( 'str.app.title' ), R.get( 'str.app.subtitle' ) );
+			}
+
+
+			
+				main();
+			
+
+		} );
+
+	})();
+
+	
+
+</script>
+
+</body></html>

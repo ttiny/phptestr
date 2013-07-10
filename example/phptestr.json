@@ -1,0 +1,4 @@
+{
+	"pattern": "test_*.php",
+	"init": "example_init.php"
+}

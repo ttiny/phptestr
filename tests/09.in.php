@@ -1,0 +1,7 @@
+<?
+
+testCase(function() {
+	testCheckExpect();
+});
+	
+?>

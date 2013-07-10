@@ -1,0 +1,5 @@
+<?
+
+testSetCaseCount(1);
+
+?>
