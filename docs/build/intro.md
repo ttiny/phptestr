@@ -9,7 +9,7 @@ will remain untraced.
 
 Very quick start
 ----------------
-1. Check the screenshot in [example/screenshot.png](../example/screenshot.png).
+1. Check the screenshot in [example/screenshot.png](https://raw.github.com/Perennials/phptestr/master/example/screenshot.png).
 2. Assuming you already have `PHP 5.4 server`, put phptestr on your server,
    _there are no other dependencies_.
 3. Open [phptestr.php?target=example](../phptestr.php?target=example) in your browser.
@@ -137,7 +137,7 @@ to the title of the file. This will open the selected script, without other scri
 in a new browser tab. Useful while debugging. Information echoed by the scripts will be shown
 in yellow boxes.
 
-Screenshot of the results of the example tests can be found in [example/screenshot.png](../example/screenshot.png).
+Screenshot of the results of the example tests can be found in [example/screenshot.png](https://raw.github.com/Perennials/phptestr/master/example/screenshot.png).
 
 The GUI is tested only on Google Chrome but there is no reason other browsers wouldn't work.
 
