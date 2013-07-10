@@ -1,6 +1,0 @@
-<?
-
-$arg = null;
-$arg->fatalError();
-
-?>
