@@ -9,9 +9,6 @@ which script to execute.
 
 namespace phptestr;
 
-var_dump( $_SERVER );
-exit;
-
 define( 'TESTSCRIPT_ARG_FILE', 1 );
 define( 'TESTSCRIPT_ARG_ARGS', 2 );
 define( 'TESTSCRIPT_ARG_INIT', 3 );
@@ -32,7 +29,7 @@ if ( !empty( $_REQUEST[ TESTSCRIPT_ARG_INIT ] ) ) {
 }
 
 $script = isset( $_REQUEST[ TESTSCRIPT_ARG_FILE ] ) ? $_REQUEST[ TESTSCRIPT_ARG_FILE ] : null;
-$arguments = isset( $_REQUEST[ TESTSCRIPT_ARG_ARGS ] ) ? $_REQUEST[ TESTSCRIPT_ARG_ARGS ] : null;
+$arguments = isset( $_REQUEST[ TESTSCRIPT_ARG_ARGS ] ) ? @json_decode( $_REQUEST[ TESTSCRIPT_ARG_ARGS ] ) : null;
 
 TestScript::run( $script, $arguments );
 	

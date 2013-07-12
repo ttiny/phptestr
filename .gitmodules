@@ -7,3 +7,6 @@
 [submodule "node/node_modules/PathUtils"]
 	path = node/node_modules/PathUtils
 	url = https://github.com/Perennials/pathutils-node
+[submodule "node/node_modules/Unitest"]
+	path = node/node_modules/Unitest
+	url = https://github.com/Perennials/unitest-js.git
