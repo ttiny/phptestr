@@ -1,3 +1,11 @@
+window.addEventListener( 'DOMContentLoaded', function () {
+	exit.addEventListener( 'click', function () {
+		$.ajax( '/exit' ).always( function () {
+			close();
+		} );
+	} );
+} );
+
 function queryParams (str) {
 	if(typeof str != 'string' || str.length == 0) str = location.search;
 	if(str.charAt(0) == '?') str = str.substr(1);

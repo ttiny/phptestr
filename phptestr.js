@@ -1,6 +1,6 @@
 "use strict";
 
-var TestScripts = require( './lib/TestScripts.js' );
+var TestHost = require( './lib/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var PathUtils = require( 'PathUtils' );
 var argv = ArgvUtils.parseArgs() || {};
@@ -13,6 +13,7 @@ var tmpl1 = '<!DOCTYPE html>\n' +
             '		<script type="text/javascript" src="/view/view.js"></script>\n' +
             '	</head>\n' +
             '	<body>\n' +
+            '		<div id="exit">exit</div>\n' +
             '		<div id="failed"></div>\n' +
             '		<div id="success"></div>\n';
 
@@ -27,8 +28,8 @@ var tmpl3 = '	</body>\n' +
             '</html>';
 
 
-var Host = require( argv.cli ? './lib/CliHost.js' : './lib/HttpHost.js' );
-var host = new Host( argv, function ( request, response, callback ) {
+var Platform = require( argv.cli ? './lib/CliHost.js' : './lib/HttpHost.js' );
+var platform = new Platform( argv, function ( request, response, callback ) {
 	
 	
 	if ( !request.target ) {
@@ -37,21 +38,21 @@ var host = new Host( argv, function ( request, response, callback ) {
 	}
 
 	else {
-		var tests = new TestScripts( argv, request.target );
+		var host = new TestHost( request.target, argv.phpbin );
 
 		if ( String.isString( request.filter ) && request.filter ) {
-			tests.Files = tests.Files.filter( function ( file ) {
+			host.Tests = host.Tests.filter( function ( file ) {
 				return PathUtils.match( file, request.filter );
 			} );
 		}
 
-		if ( tests.Files.length == 0 ) {
+		if ( host.Tests.length == 0 ) {
 			response.write( 'Nothing to test' );
 			callback();
 		}
 		else {
 			response.write( tmpl1 );
-			tests.run( request.args, function ( file, result, last ) {
+			host.run( request.args, function ( file, result, last ) {
 				if ( !last ) {
 					response.write( tmpl2( file, result ) );
 				}

@@ -1,6 +1,6 @@
 "use strict";
 
-var TestScripts = require( './lib/TestScripts.js' );
+var TestHost = require( './lib/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var Path = require( 'path' );
 var Fs = require( 'fs' );
@@ -24,7 +24,8 @@ function CompareResults ( file, results, expected, ret ) {
 	return JSON.stringify( compare ) == JSON.stringify( expected );
 }
 
-new TestScripts( ArgvUtils.parseArgs(), __dirname + '/tests' ).run( null, function ( file, results, last ) {
+var argv = ArgvUtils.parseArgs() || {};
+var host = new TestHost( __dirname + '/tests', argv.phpbin ).run( null, function ( file, results, last ) {
 	if ( !last ) {
 		return;
 	}
