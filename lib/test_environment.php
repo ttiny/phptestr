@@ -5,7 +5,7 @@ Test scripts perform one or more test cases and
 select conditions that needs to be met for the
 test to be successful. If these conditions are not met
 or the script crashes or have unexpected output,
-the TestHost will capture the errors.
+the test host will capture the errors.
 ```
 //two ways to make a test case
 //number 1
@@ -67,7 +67,6 @@ if ( $args === null ) {
 	testReRun('fork myself');
 }
 ```
-@see \phptestr\TestHost
 @package phptestr.test_environment
 */
 
@@ -81,7 +80,7 @@ include_once __DIR__ . '/TestScript.php';
  * @private
  */ 
 function testLogFn ( $fn ) {
-	\phptestr\TestScript::tellHost( __FUNCTION__, [ 'File' => $fn ] );
+	\phptestr\TestScript::tellHost( __FUNCTION__, array( 'File' => $fn ) );
 }
  
 /**

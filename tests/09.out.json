@@ -1,0 +1,12 @@
+
+	[
+		{
+			"Args" : null,
+			"Errors" : [
+				{
+					"Code" : "CHECK_EXPECTATIONS_WITHOUT_SUCH",
+					"Details" : {"Case" : 1, "Line" : 4}
+				}
+			]
+		}
+	]
