@@ -9,28 +9,36 @@ which script to execute.
 
 namespace phptestr;
 
-define( 'TESTSCRIPT_ARG_FILE', 1 );
-define( 'TESTSCRIPT_ARG_ARGS', 2 );
-define( 'TESTSCRIPT_ARG_INIT', 3 );
+//define( 'TESTSCRIPT_ARG_FILE', 1 );
+//define( 'TESTSCRIPT_ARG_ARGS', 2 );
+//define( 'TESTSCRIPT_ARG_INIT', 3 );
 
 $logfn = tempnam( sys_get_temp_dir(), 'log' );
 ini_set( 'error_log', $logfn );
+ini_set( 'log_errors', 'On' );
 ini_set( 'log_errors_max_len', 0 );
 ini_set( 'display_errors', 'Off' );
 error_reporting( E_ALL ^ E_NOTICE );
 
+// make sure this bullshit is not causing errors because it is likely that in cli mode (at least on windows) the ini setting is not present
+$tz = ini_get( 'date.timezone' );
+if ( empty( $tz ) ) {
+	ini_set( 'date.timezone', 'UTC' );
+}
+unset( $tz );
+
 require_once __DIR__ . '/TestScript.php';
 require_once __DIR__ . '/test_environment.php';
 testLogFn( $logfn );
+unset( $logfn );
 
-$_REQUEST = $_SERVER['argv'];
-if ( !empty( $_REQUEST[ TESTSCRIPT_ARG_INIT ] ) ) {
-	require_once $_REQUEST[ TESTSCRIPT_ARG_INIT ];
+if ( !empty( $_SERVER['argv'][ 3 ] ) ) {
+	require_once $_SERVER['argv'][ 3 ];
 }
 
-$script = isset( $_REQUEST[ TESTSCRIPT_ARG_FILE ] ) ? $_REQUEST[ TESTSCRIPT_ARG_FILE ] : null;
-$arguments = isset( $_REQUEST[ TESTSCRIPT_ARG_ARGS ] ) ? @json_decode( $_REQUEST[ TESTSCRIPT_ARG_ARGS ] ) : null;
+TestScript::run( 
+	isset( $_SERVER['argv'][ 1 ] ) ? $_SERVER['argv'][ 1 ] : null,
+	isset( $_SERVER['argv'][ 2 ] ) ? @json_decode( $_SERVER['argv'][ 2 ] ) : null
+);
 
-TestScript::run( $script, $arguments );
-	
 ?>

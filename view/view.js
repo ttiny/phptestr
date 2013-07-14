@@ -2,6 +2,7 @@ window.addEventListener( 'DOMContentLoaded', function () {
 	exit.addEventListener( 'click', function () {
 		$.ajax( '/exit' ).always( function () {
 			close();
+			exit.parentNode.removeChild( exit );
 		} );
 	} );
 } );
