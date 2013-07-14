@@ -1,0 +1,17 @@
+
+	[
+		{
+			"Args" : null
+		},
+		{
+			"Args" : 1,
+			"Echo" : [1]
+		},
+		{
+			"Args" : 2
+		},
+		{
+			"Args" : 2,
+			"Errors" : [{"Code" : "INFINITE_RERUN"}]
+		}
+	]

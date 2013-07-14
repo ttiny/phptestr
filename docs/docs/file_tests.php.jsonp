@@ -1,1 +1,0 @@
-jsdocgen_data("file_tests.php.jsonp",{"summary":"Performs tests of the framework itself.","tags":{"package":"phptestr.host","author":["Borislav Peev &lt;<a href=\"mailto:borislav&#46;asdf@gmail&#46;com\">borislav.asdf@gmail.com</a>&gt;"]},"def":{"type":"file","name":"tests.php"}});

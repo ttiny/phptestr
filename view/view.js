@@ -1,3 +1,12 @@
+window.addEventListener( 'DOMContentLoaded', function () {
+	exit.addEventListener( 'click', function () {
+		$.ajax( '/exit' ).always( function () {
+			close();
+			exit.parentNode.removeChild( exit );
+		} );
+	} );
+} );
+
 function queryParams (str) {
 	if(typeof str != 'string' || str.length == 0) str = location.search;
 	if(str.charAt(0) == '?') str = str.substr(1);
@@ -114,10 +123,13 @@ function ScriptRunResult ( script, result ) {
 	}
 
 	var extract = location.href.replace( /\?.*/, '' ) + '?target=' + encodeURIComponent( TARGET ) + '&filter=' + encodeURIComponent( script );
+	if ( result.Args !== undefined ) {
+		extract += '&args=' + encodeURIComponent( result.Args )
+	}
 	$name = $( '<div class="name">' + 
 					'<span class="script">' + script + '</span>' +
-					( result.Args !== null ? ' <span class="args">' + JSON.stringify( result.Args ) + '</span>' : '' ) +
-					'<span class="links"> (<a class="extract" href="' + extract + '" target="_blank">extract...</a> <a class="raw" href="' + result.Url + '" target="_blank">raw...</a>)</span>' + 
+					( result.Args !== undefined ? ' <span class="args">' + result.Args + '</span>' : '' ) +
+					'<span class="links"> (<a class="extract" href="' + extract + '" target="_blank">extract...</a>)</span>' + 
 				'</div>' );
 	$name.find( 'span.script' ).on( 'click', function () {
 		$this = $( this );
