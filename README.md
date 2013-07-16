@@ -10,13 +10,13 @@ Features:
 - Short and uncomplicated tests 
 - Code coverage
 
-How does the GUI look like?
----------------------------
+What does the GUI look like?
+----------------------------
 
 ![Screenshot](https://raw.github.com/Perennials/phptestr/master/example/screenshot.png)
 
-How does a test look like?
---------------------------
+What does a test look like?
+---------------------------
 
 ```php
 <?
