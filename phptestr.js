@@ -1,7 +1,7 @@
 "use strict";
 
 var clr = require( './lib/CliColors.js' );
-var TestHost = require( './lib/TestHost.js' );
+var TestHost = require( './lib/php/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var PathUtils = require( 'PathUtils' );
 var Fs = require( 'fs' );
@@ -9,38 +9,22 @@ var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.re
 var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
 
 
-// this stuff will be cleaned in the next release
-
 /// this is used in browser mode
 
-var tmpl1 = '<!DOCTYPE html>\n' +
-            '<html>\n' +
-            '	<head>\n' +
-            '		<link rel="stylesheet" href="/view/view.css" />\n' +
-            '		<script type="text/javascript" src="/view/jquery-1.8.3.min.js"></script>\n' +
-            '		<script type="text/javascript" src="/view/view.js"></script>\n' +
-            '	</head>\n' +
-            '	<body>\n' +
-            '		<div id="exit">exit</div>\n' +
-            '		<div id="failed"></div>\n' +
-            '		<div id="success"></div>\n';
-
+//var tmpl1 = Fs.readFileSync( __dirname + '/view/header.html' );
 function tmpl2 ( script, result ) {
-	var tmpl2 = '\n<script type="text/javascript"> ScriptRunResult(\n' + 
+	var tmpl2 = '\n<script type="text/javascript"> OnScriptRunResult(\n' + 
 	            JSON.stringify( script ) + ',\n' + 
 	            JSON.stringify( result ) + '\n); </script>\n';
 	return tmpl2;
 }
-
-var tmpl3 = '	</body>\n' +
-            '</html>';
+var tmpl3 = Fs.readFileSync( __dirname + '/view/footer.html' );
 
 
 /// this is used in cli mode
 
-
 var haderrors = false;
-function ScriptRunResult ( script, result ) {
+function OnScriptRunResult ( script, result ) {
 
 	function makeError( code, value, err ) {
 		if ( value === undefined && err !== undefined ) {
@@ -149,7 +133,7 @@ var platform = new Platform( argv, function ( request, response, callback ) {
 			if ( argv.cli ) {
 				host.run( request.args, function ( file, result, last ) {
 					if ( !last ) {
-						response.write( ScriptRunResult( file, result ) );
+						response.write( OnScriptRunResult( file, result ) );
 					}
 				}, function () {
 					callback();
@@ -159,9 +143,11 @@ var platform = new Platform( argv, function ( request, response, callback ) {
 				} );
 			}
 			else {
-				response.write( tmpl1 );
+				//response.write( tmpl1 );
+				response.write( Fs.readFileSync( __dirname + '/view/header.html' ) );
 				host.run( request.args, function ( file, result, last ) {
 					if ( !last ) {
+						process.stdout.write( OnScriptRunResult( file, result ) );
 						response.write( tmpl2( file, result ) );
 					}
 				}, function () {

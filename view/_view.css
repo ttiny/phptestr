@@ -1,0 +1,156 @@
+html, body {
+	min-height: 100%;
+	margin: 0;
+	font-family: monospace;
+}
+
+#exit {
+	padding: 5px 10px;
+	background-color: rgba( 0, 0, 0, 0.5 );
+	color: white;
+	cursor: pointer;
+	margin: 10px 10px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	border-radius: 4px;
+}
+
+#exit:hover {
+	background-color: rgba( 0, 0, 0, 0.7 );
+}
+
+.run {
+	margin: 5px;
+	padding: 5px;
+}
+
+.run > .name {
+	font-weight: bold;
+	font-size: 14px;
+	transition: background-color 0.6s;
+	-webkit-transition: background-color 0.6s;
+	-moz-transition: background-color 0.6s;
+	-o-transition: background-color 0.6s;
+}
+
+.run > .name > .script {
+	cursor: pointer;
+}
+
+#failed > .run {
+	background-color: #FFB0B0;
+}
+
+#success > .run {
+	background-color: #80FF80;
+}
+
+.run > .name.highlight {
+	background-color: #13FDFD;
+}
+
+.run.collapsed {
+	float: left;
+}
+
+.run:not(.collapsed) {
+	clear: both;
+}
+
+.run.collapsed + .run:not(.collapsed) {
+	margin-top: 10px;
+}
+
+.run.collapsed > .name {
+	float: left;
+	margin-bottom: 0;
+}
+
+.run.collapsed > .name > .links {
+	display: none;
+}
+
+.run.collapsed > .cases,
+.run.collapsed > .errors,
+.run.collapsed > .echos {
+	display: none;
+}
+
+.run > .name {
+	background-color: #DFDFDF;
+	margin-bottom: 1em;
+	padding: 1px 3px;
+}
+
+a {
+	color: #000080;
+}
+
+.case {
+	padding: 3px;
+	margin-top: 3px;
+}
+
+.case:not(.failed) + .case:not(.failed) {
+	margin-left: 5px;
+}
+
+.case:not(.failed) {
+	float: left;
+	border: 1px solid #008000;
+}
+
+.case.failed {
+	clear: both;
+	background-color: #800000;
+	color: white;
+}
+
+.clear {
+	clear: both;
+}
+
+.case.failed > .name {
+	font-weight: bold;
+}
+
+.case.failed > .name > .line {
+	font-weight: normal;
+}
+
+.case.failed > .name > .line > .number {
+	font-weight: bold;
+}
+
+.case > .error {
+	margin-top: 10px;
+}
+
+.error > .errdetails > .line.script {
+	font-weight: bold;
+}
+
+.error > .value > pre {
+	margin: 0;
+}
+
+.error > .code {
+	font-weight: bold;
+}
+
+.errors > .error {
+	border: 1px solid red;
+	margin-bottom: 5px;
+	padding: 2px 5px;
+}
+
+.echo {
+	background-color: #FFFF80;
+	margin-bottom: 5px;
+}
+
+.echo > pre {
+	margin: 0;
+	padding: 2px 5px;
+}

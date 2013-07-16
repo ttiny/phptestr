@@ -1,0 +1,1 @@
+@..\docviewjs\build\cli.bat -indir=%~dp0 -outdir=%~dp0..\frontend -name=phptestr

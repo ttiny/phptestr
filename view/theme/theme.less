@@ -1,0 +1,75 @@
+@import "../docviewjs/theme/default/theme.less";
+@import "./google-code-prettify/prettify.less";
+
+.AppView {
+	overflow-y: scroll;
+}
+
+
+#Failed .AccordionItem {
+	background-color: @state-danger-bg;
+	color: @state-danger-text;
+	border-color: darken( @state-danger-border, 10% );
+}
+
+#Failed .AccordionItem > .View:not(.AccordionItemTitle) {
+	border-top-color: darken( @state-danger-border, 10% );
+}
+
+#Passed .AccordionItem {
+	background-color: @state-success-bg;
+	color: @state-success-text;
+	border-color: darken( @state-success-border, 10% );
+}
+
+#Passed .AccordionItem > .View:not(.AccordionItemTitle) {
+	border-top-color: darken( @state-success-border, 10% );
+}
+
+.AccordionItem .echo {
+	background-color: saturate( darken( @state-warning-bg, 10% ), 50% );
+	color: saturate( darken( @state-warning-text, 10% ), 50% );
+	border-color: darken( @state-warning-border, 10% );
+}
+
+.AccordionItem > .View:not(.AccordionItemTitle) > .error {
+	background-color: saturate( @state-danger-bg, 30% );
+	color: saturate( @state-danger-text, 30% );
+	border-color: saturate( darken( @state-danger-border, 50% ), 50% );
+}
+
+.AccordionItem .case {
+	background-color: darken( @state-success-bg, 10% );
+	color: darken( @state-success-text, 10% );
+	border-color: darken( @state-success-border, 10% );
+}
+
+.AccordionItem .case.failed {
+	background-color: saturate( darken( @state-danger-bg, 50% ), 30% );
+	color: lighten( @state-danger-text, 80% );
+	border-color: darken( @state-danger-border, 50% );
+}
+
+/*.error-bg {
+	background-color: @state-danger-bg;
+}
+
+.error-text {
+	color: @state-danger-text;
+}
+
+.error-border {
+	border-color: @state-danger-border;
+}
+
+.success-bg {
+	background-color: @state-success-bg;
+}
+
+.success-text {
+	color: @state-success-text;
+}
+
+.success-border {
+	border-color: @state-success-border;
+}*/

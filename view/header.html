@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html><head>
+	<title>Phptestr</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" href="/view/phptestr.css" />
+	<script type="text/javascript" src="/view/phptestr.js"></script>
+
+	<style>
+
+		.Accordion > .AccordionItem {
+			margin: 5px;
+		}
+
+		.AccordionItem pre {
+			word-wrap: initial;
+			overflow-x: auto;
+		}
+
+		.AccordionItem .echo + .echo {
+			margin-top: 5px;
+		}
+
+		.AccordionItem .echo {
+			margin: 0;
+			padding: 3px 5px;
+		}
+
+		.AccordionItem .error .value {
+			margin: 0;
+			padding: 0;
+			background-color: initial;
+			border: initial;
+			font-size: 14px;
+		}
+
+		.AccordionItem .case .error .code {
+			margin-top: 1em;
+		}
+
+		.AccordionItem .line {
+			font-weight: bold;
+		}
+
+		.AccordionItem .case:not(.failed) {
+			float: left;
+		}
+
+		.AccordionItem .View > .error,
+		.AccordionItem .case {
+			border-width: 1px;
+			border-style: solid;
+			padding: 3px;
+			margin-top: 3px;
+			border-radius: 4px;
+		}
+
+		.AccordionItem .case + .case {
+			margin-left: 5px;
+		}
+
+		.Accordion + .Accordion {
+			clear: both;
+		}
+
+		.Accordion > .AccordionItem.active {
+			clear: both;
+		}
+
+		.Accordion > .AccordionItem.active ~ .AccordionItem:not(.active) {
+			margin-top: 0;
+		}
+
+		.Accordion > .AccordionItem:not(.active) {
+			float: left;
+		}
+
+		.AccordionItem > .Label {
+			font-weight: bold;
+		}
+
+		div.clear {
+			clear: both;
+		}
+
+		#InfoPanel.active + #Tests {
+			width: 50%;
+			float: left;
+		}
+
+		#InfoPanel:not(.active) {
+			display: none;
+		}
+
+		#InfoPanel.active {
+			width: 50%;
+			float: right;
+		}
+
+	</style>
+
+</head><body>
+
+<script type="template/docviewjs" id="Tmpl.AppView">
+	<AppView>
+		<View id="InfoPanel">
+			<Coverage id="Coverage" />
+			<StackTrace id="StackTrace" />
+		</View>
+		<View id="Tests">
+			<Accordion id="Failed" behaviour="" />
+			<Accordion id="Passed" behaviour="" />
+		</View>
+	</AppView>
+</script>
+
+<script type="template/docviewjs" id="Tmpl.Echoes">
+<% 
+	data.forEach( function ( echo ) {
+		if ( echo instanceof Object ) { echo = JSON.stringify( echo ); }
+		%><pre class="echo"><%! echo %></pre><%
+	} );
+%>
+</script>
+
+<script type="template/docviewjs" id="Tmpl.Error">
+<div class="error">
+	<div class="code"><%! data.Code %></div>
+	<% if ( data.Details && data.Details.Error ) {
+		var err = data.Details.Error;
+		var scriptline = undefined;
+		if ( err.File != data.Script ) {
+			for ( var i = 0; i < err.Trace.length; ++i ) {
+				var trace = err.Trace[i];
+				if ( trace.file == data.Script ) {
+					scriptline = trace.line;
+					break;
+				}
+			}
+			if ( scriptline == '' && err.ExceptionTrace !== undefined ) {
+				for ( var i = 0; i < err.ExceptionTrace.length; ++i ) {
+					var trace = err.ExceptionTrace[i];
+					if ( trace.file == data.Script ) {
+						scriptline = trace.line;
+						break;
+					}
+				}
+			}
+		} %>
+		<div class="errdetails">
+			<%! err.Type %>: <%! err.File %>@<%! err.Line %>
+			<% if ( scriptline ) { %>
+			(@line <span class="line"><%! scriptline %></span>)
+			<% } %>
+		</div>
+	<% } %>
+	<% if ( data.Value ) { %>
+	<pre class="value"><%! data.Value %></pre>
+	<% } %>
+</div>
+</script>
+
+<script type="template/docviewjs" id="Tmpl.Cases">
+<% data.forEach( function ( casea, i ) { %>
+	<div class="case<%= casea.Failed ? ' failed' : '' %>">
+		<%= casea.Name || 'unnamed '+(i+1) %>
+		<% if ( casea.Failed ) { %>
+			@line <span class="line"><%= casea.Failed.Details.Line %></span>
+			<%= $TT( 'Tmpl.Error', casea.Failed ) %>
+		<% } %>
+	</div>
+<% } ); %>
+<div class="clear"></div>
+</script>
+
+<script type="text/javascript">
+
+//code coverage view	
+function Coverage () {
+	View.call( this );
+}
+
+Coverage.extend( View );
+
+//stack trace view
+function StackTrace () {
+	View.call( this );
+}
+
+StackTrace.extend( View );
+
+function _onTitleClick () {
+	var item = this.findParentView( '.AccordionItem' );
+	item.setState( 'active', !item.hasState( 'active' ) );
+}
+
+//test script view
+function TestScriptResult ( script, result ) {
+	View.AccordionItem.call( this );
+	
+	var title = new View.Label( { text: script, class: 'AccordionItemTitle' } );
+	title.on( 'click', _onTitleClick );
+	this.addView( title );
+	if ( result.Errors !== undefined || result.Echo !== undefined ) {
+		this.setState( 'active' );
+	}
+
+	var content = '';
+
+	if ( result.Echo !== undefined ) {
+		content += $TT( 'Tmpl.Echoes', result.Echo );
+	}
+	if ( result.Errors !== undefined ) {
+		for ( var i = result.Errors.length - 1; i >= 0; --i ) {
+			var error = result.Errors[i];
+			error.Script = result.Script;
+			if ( error.Details !== undefined && error.Details.Case !== undefined ) {
+				result.Cases[ error.Details.Case - 1 ].Failed = error;
+			}
+			else {
+				content += $TT( 'Tmpl.Error', error );
+			}
+		}
+	}
+	if ( result.Cases !== undefined ) {
+		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed !== undefined; } ) );
+		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed === undefined; } ) );
+	}
+	this.addView( new View.HtmlArea( content ) );
+}
+
+TestScriptResult.extend( View.AccordionItem );
+
+</script>
+
+
+<script type="text/javascript">
+	
+	"use strict";
+
+	function OnScriptRunResult ( script, result ) {
+		app.view
+		        .findView( result.Errors !== undefined ? '#Failed' : '#Passed' )
+		        	.addView( new TestScriptResult( script, result ) );
+	}
+
+
+	var app = new App();
+	app.view = $T( 'Tmpl.AppView' );
+
+</script>
+

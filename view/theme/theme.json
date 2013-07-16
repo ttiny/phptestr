@@ -1,0 +1,5 @@
+{
+	"require": [
+		"../docviewjs/theme/default/theme.json"
+	]
+}

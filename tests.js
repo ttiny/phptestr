@@ -1,6 +1,6 @@
 "use strict";
 
-var TestHost = require( './lib/TestHost.js' );
+var TestHost = require( './lib/php/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var Path = require( 'path' );
 var Fs = require( 'fs' );
