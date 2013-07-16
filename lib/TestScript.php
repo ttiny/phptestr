@@ -16,11 +16,13 @@ namespace phptestr {
 		static $ErrorHandler = null;
 		static $TestScriptArguments = null;
 		static $BackTraceOffet = 0;
+		static $CodeCoverage = false;
 		
-		static function run($script, $arguments = null) {
+		static function run ( $script, $arguments = null, $coverage = false ) {
 			self::$ErrorHandler = new ErrorHandler(__CLASS__ . '::onError');
 			self::$TestScriptFile = $script;self::$TestScriptFile = $script;
 			self::$TestScriptArguments = $arguments;
+			self::$CodeCoverage = $coverage && function_exists( 'xdebug_get_code_coverage' );
 			include self::$TestScriptFile;
 		}
 
@@ -65,6 +67,23 @@ namespace phptestr {
 						'File' => $trace[$offset]['file'],
 						'Line' => $trace[$offset]['line'],
 					);
+				}
+			}
+			//clean coverage
+			if ( isset( $args['Coverage'] ) ) {
+				$cmp = __DIR__ . DIRECTORY_SEPARATOR;
+				$len = strlen( $cmp );
+				$coverage = array();
+				foreach ( $args['Coverage'] as $key => $value ) {
+					if ( strncmp( $key, $cmp, $len ) !== 0 ) {
+						$coverage[$key] = array_keys( $value );
+					}
+				}
+				if ( empty( $coverage ) ) {
+					unset( $args['Coverage'] );
+				}
+				else {
+					$args['Coverage'] = $coverage;
 				}
 			}
 			echo json_encode(array('Method' => $what, 'Args' => $args)), "\n";

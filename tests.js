@@ -4,6 +4,8 @@ var TestHost = require( './lib/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var Path = require( 'path' );
 var Fs = require( 'fs' );
+var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.readFileSync( __dirname + '/phptestr.json', 'utf8' ) ) : {};
+var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
 
 function CompareResults ( file, results, expected, ret ) {
 	var compare = results.duplicate();
@@ -24,8 +26,7 @@ function CompareResults ( file, results, expected, ret ) {
 	return JSON.stringify( compare ) == JSON.stringify( expected );
 }
 
-var argv = ArgvUtils.parseArgs() || {};
-var host = new TestHost( __dirname + '/tests', argv.phpbin ).run( null, function ( file, results, last ) {
+var host = new TestHost( __dirname + '/tests', argv ).run( null, function ( file, results, last ) {
 	if ( !last ) {
 		return;
 	}

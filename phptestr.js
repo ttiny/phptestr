@@ -4,7 +4,9 @@ var clr = require( './lib/CliColors.js' );
 var TestHost = require( './lib/TestHost.js' );
 var ArgvUtils = require( 'ArgvUtils' );
 var PathUtils = require( 'PathUtils' );
-var argv = ArgvUtils.parseArgs() || {};
+var Fs = require( 'fs' );
+var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.readFileSync( __dirname + '/phptestr.json', 'utf8' ) ) : {};
+var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
 
 
 // this stuff will be cleaned in the next release
@@ -130,7 +132,7 @@ var platform = new Platform( argv, function ( request, response, callback ) {
 	}
 
 	else {
-		var host = new TestHost( request.target, argv.phpbin );
+		var host = new TestHost( request.target, argv );
 
 		if ( String.isString( request.filter ) && request.filter ) {
 			host.Tests = host.Tests.filter( function ( file ) {

@@ -12,6 +12,7 @@ namespace phptestr;
 //define( 'TESTSCRIPT_ARG_FILE', 1 );
 //define( 'TESTSCRIPT_ARG_ARGS', 2 );
 //define( 'TESTSCRIPT_ARG_INIT', 3 );
+//define( 'TESTSCRIPT_ARG_COVERAGE', 4 );
 
 $logfn = tempnam( sys_get_temp_dir(), 'log' );
 ini_set( 'error_log', $logfn );
@@ -38,7 +39,8 @@ if ( !empty( $_SERVER['argv'][ 3 ] ) ) {
 
 TestScript::run( 
 	isset( $_SERVER['argv'][ 1 ] ) ? $_SERVER['argv'][ 1 ] : null,
-	isset( $_SERVER['argv'][ 2 ] ) ? @json_decode( $_SERVER['argv'][ 2 ] ) : null
+	isset( $_SERVER['argv'][ 2 ] ) ? @json_decode( $_SERVER['argv'][ 2 ] ) : null,
+	isset( $_SERVER['argv'][ 4 ] ) && $_SERVER['argv'][ 4 ] == 'coverage' ? true : false
 );
 
 ?>

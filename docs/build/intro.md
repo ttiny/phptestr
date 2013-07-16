@@ -62,6 +62,13 @@ called `args`. For example `http://127.0.0.1:3355/phptestr?target=example&filter
 or `phptestr -target=example -filter=test_5.php -args=1 -args=2` will start the fifth example of phptestr,
 which can accept arguments, and it will display the value of 'args'.
 
+### Code coverage
+For code coverage to work you will need to install and configure xdebug with your PHP installation.
+Then you need to set `xdebug.coverage_enable = On` in your php.ini file. Finally you need to pass `-coverage`
+argument to phptestr if you want it to collect code coverage information. You can specify this option in the
+config and it is enabled in the default config.
+More information how to enable code coverage in xdebug is found [here](http://xdebug.org/docs/code_coverage).
+
 ### Detailed configuration
 By loading the directory 'example', phptestr checks for the presence of a file named `phptestr.json`.
 This file could be used to specify additional options for your project. None of these
@@ -71,7 +78,10 @@ settings is mandatory.
 {
 	"dir": "",
 	"init": "",
-	"pattern": "*.php:.*|_*"
+	"pattern": "*.php:.*|_*",
+	"coverage": false,
+	"phpbin": "php",
+	"phpini": ""
 }
 ```
 
@@ -81,7 +91,17 @@ settings is mandatory.
 - `pattern` - can be used to override which files will be recognized as test scripts (see below).
   The default pattern is the one above - includes all '.php' files, non recursively, excluding
   all files starting with dot or underscore.
+- `coverage` - boolean value to enable or disable collection code coverage information for tests.
+  This is disabled by default for individual test suites, but is enabled by default in the default
+  configuration.
+- `phpbin` - PHP binary to use for executing the scripts.
+- `phpini` - php.ini file to use for configuring PHP.
 
+### Default configuration
+On startup phptestr will attempt to load `phptestr.json` from its own directory. This file has the same
+format as in the previous section and whatever is found there will be used as default configuration.
+This is a good place to configure the directory of your PHP installation. By default code coverage
+is enabled for all tests through this file.
 
 ### Wildcard patterns
 Patterns are simple regular expressions. `*` matches everything but forward slash `/`, and `**`
@@ -172,17 +192,32 @@ Where **OPTIONS** is:
 Directory where to look for tests or phptestr.json. Optional when starting in GUI mode as
 it can be chosen from the browser.
 
+
+```
+-coverage
+```
+Optional. Enables collecting of code coverage information from tests. Depends on xdebug.
+
+
 ```
 -cli
 ```
 Optional. Will not start a browser but run the tests and display the results in the console. This
 mode does not support all features and is meant for automation.
 
+
 ```
 -phpbin=path
 ```
 Optional. Path to the PHP binary to use for starting the tests. Defaults to 'php' and it must be installed
 in the system path for the default to work.
+
+
+```
+-phpini=path
+```
+Optional. Path to file or directory with php.ini configuration. This will be passed as argument to PHP.
+
 
 ```
 -host=hostname

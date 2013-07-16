@@ -89,6 +89,10 @@ function testLogFn ( $fn ) {
  * @author Borislav Peev <borislav.asdf@gmail.com>
  */
 function testCaseBegin($name = null) {
+	if ( \phptestr\TestScript::$CodeCoverage ) {
+		xdebug_stop_code_coverage( true );
+		xdebug_start_code_coverage();
+	}
 	\phptestr\TestScript::tellHost(__FUNCTION__, array('Name' => $name));
 }
 
@@ -97,7 +101,13 @@ function testCaseBegin($name = null) {
  * @author Borislav Peev <borislav.asdf@gmail.com>
  */
 function testCaseEnd() {
-	\phptestr\TestScript::tellHost(__FUNCTION__);
+	if ( \phptestr\TestScript::$CodeCoverage ) {
+		\phptestr\TestScript::tellHost( __FUNCTION__, array( 'Coverage' => xdebug_get_code_coverage() ) );
+		xdebug_stop_code_coverage( true );
+	}
+	else {
+		\phptestr\TestScript::tellHost( __FUNCTION__ );	
+	}
 }
 
 /**
@@ -269,7 +279,13 @@ function testReRun($args) {
  * @author Borislav Peev <borislav.asdf@gmail.com>
  */
 function testWillCrash() {
-	\phptestr\TestScript::tellHost(__FUNCTION__);
+	if ( \phptestr\TestScript::$CodeCoverage ) {
+		\phptestr\TestScript::tellHost( __FUNCTION__, array( 'Coverage' => xdebug_get_code_coverage() ) );
+		xdebug_stop_code_coverage( true );
+	}
+	else {
+		\phptestr\TestScript::tellHost( __FUNCTION__ );	
+	}
 }
 
 
