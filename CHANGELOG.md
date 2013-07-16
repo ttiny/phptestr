@@ -3,9 +3,9 @@
 
 - Added code coverage support via xdebug.
 - Added -coverage option.
-- Now could have phptestr.json in program's directory with default configuration.
-- Now able to configure the php installation to use per testsuite from phptestr.json.
 - Added -phpini option.
+- Added default configuration in phptestr/phptestr.json.
+- Added the ability to configure the PHP installation in use from phptestr.json.
 
 0.9
 ---
