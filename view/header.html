@@ -8,7 +8,7 @@
 
 	<style>
 
-		.Accordion > .AccordionItem {
+		.AccordionItem {
 			margin: 5px;
 		}
 
@@ -63,20 +63,34 @@
 			clear: both;
 		}
 
-		.Accordion > .AccordionItem.active {
+		.AccordionItem.active {
 			clear: both;
 		}
 
-		.Accordion > .AccordionItem.active ~ .AccordionItem:not(.active) {
+		.AccordionItem.active ~ .AccordionItem:not(.active) {
 			margin-top: 0;
 		}
 
-		.Accordion > .AccordionItem:not(.active) {
+		.AccordionItem:not(.active) {
 			float: left;
 		}
 
-		.AccordionItem > .Label {
+		.AccordionItemTitle > .Label {
 			font-weight: bold;
+			float: left;
+		}
+
+		.AccordionItem:not(.active) > .AccordionItemTitle > .Link {
+			display: none;
+		}
+
+		.AccordionItemTitle > .Link {
+			float: right;
+			margin-top: 2px;
+		}
+
+		.AccordionItemTitle > .Link + .Link {
+			margin-right: 10px;
 		}
 
 		div.clear {
@@ -173,6 +187,17 @@
 <div class="clear"></div>
 </script>
 
+
+<script type="template/docviewjs" id="Tmpl.Title">
+	<View class="AccordionItemTitle">
+		<Link text="extract" url="<%! data.Url %>" target="_blank" />
+		<% if ( data.Coverage ) { %><Link text="coverage" url="<%! data.Url %>" /><% } %>
+		<Label text="<%! data.Script %>" />
+	</View>
+</script>
+
+
+
 <script type="text/javascript">
 
 //code coverage view	
@@ -194,17 +219,53 @@ function _onTitleClick () {
 	item.setState( 'active', !item.hasState( 'active' ) );
 }
 
+function _queryParams ( str ) {
+	if ( !String.isString( str ) || str.length == 0 ) {
+		str = location.search;
+	}
+	if ( str.charAt( 0 ) == '?' ) {
+		str = str.substr( 1 );
+	}
+	var params = str.split( '&' );
+	var ret = {};
+	for ( var i = 0, iend = params.length; i < iend; ++i ) {
+		var param = params[i];
+		var kv = param.split( '=' );
+		var key = kv[0];
+		var value = kv[1] !== undefined ? decodeURIComponent( kv[1] ) : null;
+		ret[key] = value;
+	}
+	return ret;
+}
+
+var BASEURL = location.href.replace( /\?.*/, '' );
+var QUERY = _queryParams();
+var TARGET = encodeURIComponent( QUERY.target || '.' );
+var FILTER = QUERY.filter;
+
+
 //test script view
 function TestScriptResult ( script, result ) {
 	View.AccordionItem.call( this );
 	
-	var title = new View.Label( { text: script, class: 'AccordionItemTitle' } );
-	title.on( 'click', _onTitleClick );
-	this.addView( title );
-	if ( result.Errors !== undefined || result.Echo !== undefined ) {
-		this.setState( 'active' );
+	var extract = BASEURL + '?target=' + TARGET + '&filter=' + encodeURIComponent( script );
+	if ( result.Args !== undefined ) {
+		extract += '&args=' + encodeURIComponent( result.Args )
 	}
-
+	
+	var hascoverage = false;
+	if ( result.Cases !== undefined ) {
+		for ( var i = result.Cases.length - 1; i >= 0; --i ) {
+			if ( result.Cases[i].Coverage ) {
+				hascoverage = true;
+				break;
+			}
+		}
+	}
+	var title = $T( 'Tmpl.Title', { Script: script, Url: extract, Coverage: hascoverage } )
+	title.addView( new View().setClass( 'clear' ) );
+	title.on( 'click', _onTitleClick );
+	
 	var content = '';
 
 	if ( result.Echo !== undefined ) {
@@ -226,7 +287,14 @@ function TestScriptResult ( script, result ) {
 		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed !== undefined; } ) );
 		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed === undefined; } ) );
 	}
-	this.addView( new View.HtmlArea( content ) );
+	content = new View.HtmlArea( content );
+
+	this.addView( title );
+	this.addView( content );
+
+	if ( result.Errors !== undefined || result.Echo !== undefined ) {
+		this.setState( 'active' );
+	}
 }
 
 TestScriptResult.extend( View.AccordionItem );
