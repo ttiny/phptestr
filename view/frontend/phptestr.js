@@ -117,14 +117,14 @@ return true},addEventListener:function(d,f,a){var c=this;var e=function(){return
 return this._element.addEventListener(d,e,a)},removeEventListener:function(f,g,a){var c=this._events[f];
 if(c instanceof Array){for(var b=0,d=c.length;b<d;++b){var e=c[b];if(e!==null&&e[1]===g&&e[2]===a){c[b]=null;
 return this._element.removeEventListener(f,e[0],a)}}}},dispatchEvent:function(a){return this._element.dispatchEvent(a)
-},setText:function(a){this._element.textContent=a;return this},setId:function(a){this._element.id=a;
-return this},setClass:function(a){var c=this._element.classList;if(a.indexOf(" ")>0){a=a.split(" ");
-for(var b=a.length-1;b>=0;--b){c.add(a[b])}}else{c.add(a)}return this},setBehavior:function(a){return this.addBehavior(a)
-},hasState:function(a){return this._element.classList.contains(a)},setState:function(b,d){d=d===false?"remove":"add";
-var c=this._element.classList;if(b.indexOf(" ")>0){b=b.split(" ");for(var a=b.length-1;
-a>=0;--a){c[d](b[a])}}else{c[d](b)}return this}}).mixin(TEventDispatcher2);"use strict";
-(function(g,b){var e={"'":"\\'","\\":"\\\\","\r":"\\r","\n":"\\n","\t":"\\t"};var f=/[\\'\r\n\t]/g;
-function k(m){return m.replace(f,"\\$&")}function d(m,n){return new a({cache:true,source:m,id:n})
+},setText:function(a){this._element.textContent=a;return this},getText:function(){return this._element.textContent
+},setId:function(a){this._element.id=a;return this},setClass:function(a){var c=this._element.classList;
+if(a.indexOf(" ")>0){a=a.split(" ");for(var b=a.length-1;b>=0;--b){c.add(a[b])}}else{c.add(a)
+}return this},setBehavior:function(a){return this.addBehavior(a)},hasState:function(a){return this._element.classList.contains(a)
+},setState:function(b,d){d=d===false?"remove":"add";var c=this._element.classList;
+if(b.indexOf(" ")>0){b=b.split(" ");for(var a=b.length-1;a>=0;--a){c[d](b[a])}}else{c[d](b)
+}return this}}).mixin(TEventDispatcher2);"use strict";(function(g,b){var e={"'":"\\'","\\":"\\\\","\r":"\\r","\n":"\\n","\t":"\\t"};
+var f=/[\\'\r\n\t]/g;function k(m){return m.replace(f,"\\$&")}function d(m,n){return new a({cache:true,source:m,id:n})
 }function a(u,p,n){var s={}.merge(a.DefaultSettings);p=p instanceof Object?s.merge(p):s;
 var o=0;var m="";if(u instanceof Object&&u.cache===true){o=1;m=u.source;n=u.id}else{var t=new RegExp(p.escape+"|"+p.interpolate+"|"+p.evaluate,"g");
 var q=0;u.replace(t,function(w,x,v,z,y){++o;m+="__p += '"+k(u.slice(q,y))+"';\n";
@@ -135,13 +135,13 @@ try{this._template=new Function(p.variable,"source",m)}catch(r){if(b.DEBUG){cons
 }r.source=m;throw r}}else{m="return '"+k(u)+"';";this._template=function(){return u
 }}this._settings=p;this._source=m}a.DefaultSettings={variable:"data",evaluate:"<%([\\s\\S]+?)%>",interpolate:"<%=([\\s\\S]+?)%>",escape:"<%!([\\s\\S]+?)%>",print:"prn"};
 var h={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#27;"};var i=/[&<>"']/g;
-function j(m){return h[m]}a.escapeHtml=function(m){return m.replace(i,j)};a.define({getSource:function(){return this._source
-},render:function(m){return this._template(m,this._source)}});a.Cache={};var c={};
-function l(q,p){var m=c[q];if(m!==undefined){return p!==undefined?m.render(p):m}var n=a.Cache[q];
-if(n!==undefined){m=d(n,q);c[q]=m;return p!==undefined?m.render(p):m}var o=document.getElementById(q);
-if(o){m=new a(o.innerHTML,undefined,q);c[q]=m;return p!==undefined?m.render(p):m}throw new Error("TEXTTEMPLATE_ID_NOT_FOUND")
-}g.$TT=l;g.TextTemplate=a})(this,typeof global!="undefined"?global:window);"use strict";
-(function(a){function b(d){this._template=d}b.loadString=function(e){var g=b._parser||(b._parser=new DOMParser());
+function j(m){return h[m]}a.escapeHtml=function(m){if(!String.isString(m)){m=String(m)
+}return m.replace(i,j)};a.define({getSource:function(){return this._source},render:function(m){return this._template(m,this._source)
+}});a.Cache={};var c={};function l(q,p){var m=c[q];if(m!==undefined){return p!==undefined?m.render(p):m
+}var n=a.Cache[q];if(n!==undefined){m=d(n,q);c[q]=m;return p!==undefined?m.render(p):m
+}var o=document.getElementById(q);if(o){m=new a(o.innerHTML,undefined,q);c[q]=m;return p!==undefined?m.render(p):m
+}throw new Error("TEXTTEMPLATE_ID_NOT_FOUND")}g.$TT=l;g.TextTemplate=a})(this,typeof global!="undefined"?global:window);
+"use strict";(function(a){function b(d){this._template=d}b.loadString=function(e){var g=b._parser||(b._parser=new DOMParser());
 var f=g.parseFromString(e,"text/xml");var d=f.getElementsByTagName("parsererror");
 if(d.length>0){throw new SyntaxError(d[0].textContent)}return new b(f)};b.loadInline=function(d){var e=document.getElementById(d);
 if(e){return b.loadString(e.innerHTML)}throw new Error("VIEWTEMPLATE_ID_NOT_FOUND")
@@ -194,14 +194,24 @@ var c=j[0];var f=j[1];if((c==-1||g>=c)&&(f==-1||g<=f)){b=d;break}}if(b===null){r
 }var a=this._element.classList;if(b!==this._lastDeviceClass){if(this._lastDeviceClass!==null){a.remove(this._lastDeviceClass)
 }var h=new View.AppView.DeviceSizeChanged(b,this._lastDeviceClass);a.add(this._lastDeviceClass=b);
 this.dispatchEvent(h);return true}return false},setText:function(a){return document.title=(typeof R!="undefined"?R.render(a)||a:a)
-},getText:function(){return document.title}});"use strict";View.HtmlArea=function(a){View.call(this);
-var b=this._element;b.classList.add("HtmlArea");if(a){b.innerHTML=a}};View.HtmlArea.fromTemplate=function(d){var c="";
-var a=View.HtmlArea._serializer||(View.HtmlArea._serializer=new XMLSerializer());
-var e=d.firstChild;while(e){c+=a.serializeToString(e);e=e.nextSibling}var b=new View.HtmlArea(c);
-ViewTemplate.setupViewFromAttributes(b,d);return b};View.HtmlArea.extend(View,{setHtml:function(a){this._element.innerHTML=a;
-return this},getHtml:function(a){return this._element.innerHTML}});"use strict";View.Button=function(b){View.call(this,"button");
-View.TLabel.call(this);var a=this._element.classList;a.add("TLabel");a.add("Button");
-if(b){ViewTemplate.setupViewFromProperties(this,b)}};View.Button.extend(View,{setState:function(a,b){if(a=="disabled"){if(b===false){this._element.removeAttribute("disabled")
+},getText:function(){return document.title}});"use strict";View.CodeBlock=function(a){View.call(this,"code");
+var b=this._element;b.classList.add("CodeBlock");if(a){this.setText(a)}};View.CodeBlock.defineStatic({fromTemplate:function(d){var c="";
+var a=View.CodeBlock._serializer||(View.CodeBlock._serializer=new XMLSerializer());
+var e=d.firstChild;while(e){c+=a.serializeToString(e);e=e.nextSibling}var b=new View.CodeBlock(d.textContent);
+ViewTemplate.setupViewFromAttributes(b,d);return b}});View.CodeBlock.extend(View);
+"use strict";(function(){View.HtmlArea=function(d){View.call(this);var e=this._element;
+e.classList.add("HtmlArea");if(d){this.setHtml(d)}};View.HtmlArea.defineStatic({fromTemplate:function(g){var f="";
+var d=View.HtmlArea._serializer||(View.HtmlArea._serializer=new XMLSerializer());
+var h=g.firstChild;while(h){f+=d.serializeToString(h);h=h.nextSibling}var e=new View.HtmlArea(f);
+ViewTemplate.setupViewFromAttributes(e,g);return e}});var c=/(<\/?)view:([a-z\-]+)/gi;
+function b(e,g,d){var f=d.split("-");for(var j=f.length-1;j>=0;--j){var h=f[j];f[j]=h.charAt(0).toUpperCase()+h.substr(1)
+}return g+f.join()}function a(e){var f=e.firstElementChild;while(f){if(f.localName.startsWith("view:")){var d=f.outerHTML.replace(c,b);
+var g=ViewTemplate.loadString(d).createView().getElement();f=f.parentNode.replaceChild(g,f)
+}else{a(f)}f=f.nextElementSibling}}View.HtmlArea.extend(View,{setHtml:function(d){this._element.innerHTML=d;
+a(this._element);return this},getHtml:function(d){return this._element.innerHTML}})
+})(this);"use strict";View.Button=function(b){View.call(this,"button");View.TLabel.call(this);
+var a=this._element.classList;a.add("TLabel");a.add("Button");if(b){ViewTemplate.setupViewFromProperties(this,b)
+}};View.Button.extend(View,{setState:function(a,b){if(a=="disabled"){if(b===false){this._element.removeAttribute("disabled")
 }else{this._element.setAttribute("disabled","disabled")}}return View.prototype.setState.call(this,a,b)
 }}).mixin(View.TLabel,ResolveMixins({setText:View.TLabel}));"use strict";View.Link=function(b){View.call(this,"button");
 View.TLabel.call(this);var a=this._element.classList;a.add("TLabel");a.add("Link");

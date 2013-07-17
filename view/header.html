@@ -31,6 +31,7 @@
 			padding: 0;
 			background-color: initial;
 			border: initial;
+			color: inherit;
 			font-size: 14px;
 		}
 
@@ -166,6 +167,8 @@
 			<% if ( scriptline ) { %>
 			(@line <span class="line"><%! scriptline %></span>)
 			<% } %>
+			<% if ( err.Trace.length > 0 ) { %> <View:Button class="tiny" text="trace"></View:Button><% } %>
+			<% if ( err.ExceptionTrace !== undefined ) { %> <View:Button class="tiny" text="exception"></View:Button><% } %>
 		</div>
 	<% } %>
 	<% if ( data.Value ) { %>
@@ -214,9 +217,10 @@ function StackTrace () {
 
 StackTrace.extend( View );
 
-function _onTitleClick () {
+function _onTitleClick ( e ) {
 	var item = this.findParentView( '.AccordionItem' );
 	item.setState( 'active', !item.hasState( 'active' ) );
+	e.stopPropagation();
 }
 
 function _queryParams ( str ) {
@@ -292,7 +296,7 @@ function TestScriptResult ( script, result ) {
 	this.addView( title );
 	this.addView( content );
 
-	if ( result.Errors !== undefined || result.Echo !== undefined ) {
+	if ( FILTER == script || result.Errors !== undefined || result.Echo !== undefined ) {
 		this.setState( 'active' );
 	}
 }
@@ -315,6 +319,10 @@ TestScriptResult.extend( View.AccordionItem );
 
 	var app = new App();
 	app.view = $T( 'Tmpl.AppView' );
+
+	//window.addEventListener( 'beforeunload', function () {
+	//	App.include( '/exit', 'js' );
+	//} );
 
 </script>
 
