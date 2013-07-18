@@ -1,5 +1,12 @@
+function OpenSourceButton ( button ) {
+	button.on( 'click', function ( e ) {
+		app.view.sourceview.open();
+	} );
+}
+
 function SourceView () {
 	View.Panel.call( this );
+	this.setClass( 'SourceView' );
 	this.addView( $T( 'Tmpl.SourceView' ) );
 	this._code = this.findView( '#code' ).setState( 'active', false );
 	this._title = this.findView( '#title' );
@@ -30,16 +37,16 @@ SourceView.extend( View.Panel, {
 				that._code.setHtml( code );
 				that._code.setState( 'active' );
 				if ( that._highlight ) {
-					that.highlight( that._highlight );
+					that.highlight.apply( that, that._highlight );
 					that._highlight = null;
 				}
 			}
 		} ).send();
 	},
 
-	highlight: function ( lines ) {
+	highlight: function ( lines, scrollintoview ) {
 		if ( !this._loaded ) {
-			this._highlight = lines;
+			this._highlight = arguments;
 		}
 		if ( !(lines instanceof Array) ) {
 			lines = [ lines ];
@@ -54,7 +61,7 @@ SourceView.extend( View.Panel, {
 			var li = lis[lines[i]-1];
 			if ( li ) {
 				li.classList.add( 'highlight' );
-				if ( lines.length == 1 ) {
+				if ( scrollintoview && lines.length == 1 ) {
 					li.scrollIntoView();
 				}
 			}

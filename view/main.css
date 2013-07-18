@@ -103,3 +103,19 @@ div.clear {
 .SourceView .CodeBlock:not(.active) {
 	display: none;
 }
+
+.CoverageView .Label {
+	display: block;
+	font-weight: bold;
+	border-bottom: 1px solid #eeeeee;
+	margin-bottom: 8px;
+	padding-bottom: 1px;
+}
+
+.CoverageView .Link {
+	display: block;
+}
+
+.CoverageView .Link + .Label {
+	margin-top: 1em;
+}

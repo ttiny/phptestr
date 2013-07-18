@@ -7,57 +7,34 @@ var FILTER = QUERY.filter;
 
 
 
-
-
-function TraceLink ( link ) {
-	link.on( 'click', function () {
-		var trace = link.getData();
-		app.view.sourceview.load( trace.file );
-		app.view.sourceview.highlight( trace.line );
-	} );
+function _getCoverageFiles ( result, casei ) {
+	var ret = {};
+	var i = (casei === true ? result.Cases.length - 1 : casei);
+	for (; i >= 0; --i ) {
+		if ( casei !== true && i !== casei ) {
+			continue;
+		}
+		var casea = result.Cases[i];
+		if ( casea.Coverage === undefined ) {
+			continue;
+		}
+		for ( var key in casea.Coverage ) {
+			if ( ret[key] === undefined ) {
+				ret[key] = casea.Coverage[key];
+			}
+			else {
+				ret[key] = ret[key].concat( casea.Coverage[key] );
+			}
+		}
+	}
+	return ret;
 }
 
-function OpenSourceButton ( button ) {
-	button.on( 'click', function ( e ) {
-		app.view.sourceview.open();
-	} );
-}
 
 function ExtractButton ( button ) {
 	button.on( 'click', function ( e ) {
 		window.open( this.getData() );
 		e.stopPropagation();
-	} );
-}
-
-function CoverageButton ( button ) {
-	button.on( 'click', function ( e ) {
-		e.stopPropagation();
-	} );
-}
-
-function CloseStackTraceButton ( button ) {
-	button.on( 'click', function () {
-		app.view.removeView( app.view.sourceview );
-		app.view.removeView( app.view.traceview );
-	} );
-}
-
-function CloseCoverageButton ( button ) {
-	button.on( 'click', function () {
-		app.view.removeView( app.view.sourceview );
-		app.view.removeView( app.view.coverageview );
-	} );
-}
-
-function TraceButton ( button ) {
-	button.on( 'click', function ( e ) {
-		var sourceview = new SourceView().setState( 'active' );
-		var traceview = new TraceView( sourceview, button.getData() );
-		app.view.addView( sourceview, 'first' );
-		app.view.addView( traceview );
-		app.view.sourceview = sourceview;
-		app.view.traceview = traceview;
 	} );
 }
 
@@ -148,7 +125,7 @@ TestScriptResult.extend( View.AccordionItem );
 function OnScriptRunResult ( script, result ) {
 	app.view
 	        .findView( result.Errors !== undefined ? '#Failed' : '#Passed' )
-	        	.addView( new TestScriptResult( script, result ) );
+	        .addView( new TestScriptResult( script, result ) );
 }
 
 

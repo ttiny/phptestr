@@ -6,65 +6,84 @@ select conditions that needs to be met for the
 test to be successful. If these conditions are not met
 or the script crashes or have unexpected output,
 the test host will capture the errors.
-```
-//two ways to make a test case
-//number 1
-testCase('Description of the test', function () {
-	//test a condition and mark the case as failed
-	test(1 === true, '1 is not identical to true');
-});
 
-//number 2
+The simplest test looks like this (the name is optional):
+```php
+<?
+testCase( 'My Test', function () {
+	test( true ); //this condition will pass
+	test( false ); //this condition will fail so will the test case
+} );
+?>
+```
+
+Two ways to make a test case:
+```php
+// number 1
+testCase( 'Description of the test', function () {
+	//test a condition and mark the case as failed
+	test( 1 === true, '1 is not identical to true' );
+} );
+
+// number 2
 testCaseBegin();
-	test(null !== 0, 'null is not identical to 0');
+	test( null !== 0, 'null is not identical to 0' );
 testCaseEnd();
 ```
 
-It is possible to test program flow:
-```
-testCase(function() {
+It is popssible to test program flow:
+```php
+// like this
+testCase( function() {
 	if ( 1 ) {
-		//fail the test explicitly
-		testFailed('Unexpected program flow');
+		// fail the test explicitly
+		testFailed( 'Unexpected program flow' );
 	}
-});
+} );
 
-testCase(function() {
-	//set some expectations
+// or like this
+testCase( function() {
+	
+	// set some expectations
 	testExpect(1, 2, 3);
 	if ( 1 ) {
-		//output something expected
+		// output something expected
 		testOut(1);
 	}
+	
 	if ( 0 ) {
-		//output something expected
+		// output something expected
 		testOut(2);
 	}
+	
 	if ( 3 ) {
-		//output something expected
+		// output something expected
 		testOut(3);
 	}
-	//the test case will fail because the output is 1, 3 and 1, 2, 3 is expected
+
+	// the test case will fail because the output is 1, 3 and 1, 2, 3 is expected
 	testCheckExpect();
 }); 
 ```
 
 It is also possible to test scripts that will crash:
-```
-testCase(function() {
-	//this test case will succeed only if the script crashes
+```php
+testCase( function() {
+	// this test case will succeed only if the script crashes
 	testWillCrash();
 	$a->crash();
-});
+} );
 ```
 
 Test scripts can run themselves again with arguments:
-```
-//this echo is for debugging the test script, it won't break any test case
+```php
 $args = testGetArgs();
-testEcho($args === null ? 'Script started w/o arguments' : 'Script started with arguments');
+
+// this echo is for debugging the test script, it won't break any test case
+testEcho( $args === null ? 'Script started w/o arguments' : 'Script started with arguments' );
+
 if ( $args === null ) {
-	testReRun('fork myself');
+	testReRun( 'fork myself' );
 }
 ```
 @package phptestr.test_environment

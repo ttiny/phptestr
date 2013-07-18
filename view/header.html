@@ -17,7 +17,7 @@
 
 <script type="template/docviewjs" id="Tmpl.TraceView"><Template>
 <PanelTitle>
-	<Button text="close" state="small" behavior="CloseStackTraceButton" class="float-right" />
+	<Button text="close" state="small" behavior="CloseTraceButton" class="float-right" />
 	<Txt text="Stack trace" />
 </PanelTitle>
 <% data.forEach( function ( trace ) { 
@@ -31,12 +31,54 @@
 <% } ); %>
 </Template></script>
 
-<script type="template/docviewjs" id="Tmpl.CoverageView">
+
+
+
+
+
+<script type="template/docviewjs" id="Tmpl.CoverageView"><Template>
 <PanelTitle>
 	<Button text="close" state="small" behavior="CloseCoverageButton" class="float-right" />
 	<Txt text="Coverage" />
 </PanelTitle>
-</script>
+<%
+	var cases = 0;
+	for ( var i = 0, iend = data.Cases.length; i < iend; ++i ) {
+		if ( data.Cases[i].Coverage === undefined ) {
+			continue;
+		}
+		++cases;
+	}
+	if ( cases > 1 ) {
+		%><Label text="Combined coverage" /><%
+		var files = _getCoverageFiles( data, true );
+		var sorted = Object.keys( files ).sort();
+		sorted.forEach( function ( file ) {
+			%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+		} );
+	}
+%>
+<%
+	for ( var i = 0, iend = data.Cases.length; i < iend; ++i ) {
+		var casea = data.Cases[i];
+		if ( casea.Coverage === undefined ) {
+			continue;
+		}
+		var files = _getCoverageFiles( data, i );
+		var sorted = Object.keys( files ).sort();
+		
+		%><Label text="<%! casea.Name %>" /><%
+		sorted.forEach( function ( file ) {
+			%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+		} );
+	}
+%>
+</Template></script>
+
+
+
+
+
 
 <script type="template/docviewjs" id="Tmpl.SourceView"><Template>
 <PanelTitle>
@@ -45,6 +87,9 @@
 </PanelTitle>
 <CodeBlock id="code" />
 </Template></script>
+
+
+
 
 
 <script type="template/docviewjs" id="Tmpl.AppView">
@@ -112,8 +157,8 @@
 			<% } %>
 		</div>
 	<% } %>
-	<% if ( data.Value ) { %>
-	<pre class="value"><%! data.Value %></pre>
+	<% if ( data.Value || err.Value ) { %>
+	<pre class="value"><%! data.Value || err.Value %></pre>
 	<% } %>
 </div>
 </script>
@@ -125,7 +170,7 @@
 <script type="template/docviewjs" id="Tmpl.Cases">
 <% data.forEach( function ( casea, i ) { %>
 	<div class="case<%= casea.Failed ? ' failed' : '' %>">
-		<%= casea.Name || 'unnamed '+(i+1) %>
+		<%= casea.Name ? casea.Name : casea.Name = 'unnamed '+(i+1) %>
 		<% if ( casea.Failed ) { %>
 			@line <span class="line"><%= casea.Failed.Details.Line %></span>
 			<%= $TT( 'Tmpl.Error', casea.Failed ) %>
@@ -143,10 +188,22 @@
 	<View class="AccordionItemTitle">
 		<Label text="<%! data.Script + ( data.Args ? ': ' + data.Args : '' ) %>" />
 		<% if ( data.Url ) { %>
-			<Button state="tiny" class="some-margin-left" text="extract..." behavior="ExtractButton" data="<%= $bind( data.Url ) %>" target="_blank" />
+			<Button
+					state="tiny"
+					class="some-margin-left"
+					text="extract..."
+					behavior="ExtractButton"
+					data="<%= $bind( data.Url ) %>"
+			/>
 		<% } %>
 		<% if ( data.Coverage ) { %>
-			<Button state="tiny" class="some-margin-left" behavior="CoverageButton" text="coverage" data="<%= $bind( data.Result ) %>" />
+			<Button 
+					state="tiny"
+					class="some-margin-left"
+					behavior="CoverageButton"
+					text="coverage"
+					data="<%= $bind( data.Result ) %>" 
+			/>
 		<% } %>
 	</View>
 </script>
@@ -161,4 +218,5 @@
 <script type="text/javascript" src="/view/highlight.js/highlight.pack.js"></script>
 <script type="text/javascript" src="/view/SourceView.js"></script>
 <script type="text/javascript" src="/view/TraceView.js"></script>
+<script type="text/javascript" src="/view/CoverageView.js"></script>
 <script type="text/javascript" src="/view/main.js"></script>
