@@ -3,7 +3,7 @@
 
 
 function asd () {
-	throw new Exception();
+	$p();
 }
 
 function qwe () {

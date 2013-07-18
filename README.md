@@ -29,5 +29,10 @@ testCase( 'My Test', function () {
 ?>
 ```
 
+### Credits
+Third-party software used:
+- [Highlight.js](https://github.com/isagalaev/highlight.js)
+- [node-open](https://github.com/pwnall/node-open)
+
 ### Authors
 Borislav Peev (borislav.asdf at gmail dot com)

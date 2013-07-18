@@ -27,12 +27,31 @@ namespace phptestr {
 		}
 
 		static function cleanTrace ( $trace ) {
-			foreach ( $trace as $key => $value ) {
-				if ( isset( $value['file'] ) && $value['file'] == __FILE__ ) {
-					return array_slice( $trace, 0, $key - 2 - self::$BackTraceOffet );
+			$dir = __DIR__ . DIRECTORY_SEPARATOR;
+			$len = strlen( $dir );
+			$ret = array();
+			foreach ( $trace as &$value ) {
+				if ( isset( $value['file'] ) && strncmp( $value['file'], $dir, $len ) === 0 ) {
+					continue;
 				}
+				else if ( 
+					isset( $value['class'] ) &&
+					( $value['class'] == 'phptestr\ErrorHandler' || $value['class'] == 'phptestr\TestScript' )
+				) {
+					if ( isset( $value['file'] ) ) {
+						unset( $value['class'] );
+						unset( $value['function'] );
+						unset( $value['args'] );
+						unset( $value['object'] );
+						unset( $value['type'] );
+					}
+					else {
+						continue;
+					}
+				}
+				$ret[] = $value;
 			}
-			return $trace;
+			return empty( $ret ) ? null : $ret;
 		}
 		
 		static function onError($errno, $errstr, $errfile, $errline, $exc) {
@@ -42,11 +61,11 @@ namespace phptestr {
 					'Line' => $errline,
 					'Type' => ErrorHandler::phpErrorNoToString($errno),
 					'Value' => $errstr,
-					'Trace' => self::cleanTrace( array_slice( debug_backtrace(), 2 + self::$BackTraceOffet ) ),
+					'Trace' => self::cleanTrace( debug_backtrace() ),
 				)
 			);
 			if ( $exc instanceof \Exception ) {
-				$arr['Error']['ExceptionTrace'] = self::cleanTrace( array_slice( $exc->getTrace(), 1 + self::$BackTraceOffet ) );
+				$arr['Error']['ExceptionTrace'] = self::cleanTrace( array_merge( array(array( 'file' => $errfile, 'line' => $errline )), $exc->getTrace() ) );
 			}
 			self::tellHost('testUnpredictedError', $arr);
 			exit;
@@ -64,8 +83,8 @@ namespace phptestr {
 				$offset = 1 + self::$BackTraceOffet;
 				if ( isset($trace[$offset]['file']) ) {
 					$args['Debug']['Trace'] = array(
-						'File' => $trace[$offset]['file'],
-						'Line' => $trace[$offset]['line'],
+						'file' => $trace[$offset]['file'],
+						'line' => $trace[$offset]['line'],
 					);
 				}
 			}

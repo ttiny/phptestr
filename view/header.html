@@ -3,131 +3,62 @@
 	<title>Phptestr</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-	<link rel="stylesheet" href="/view/phptestr.css" />
-	<script type="text/javascript" src="/view/phptestr.js"></script>
-
-	<style>
-
-		.AccordionItem {
-			margin: 5px;
-		}
-
-		.AccordionItem pre {
-			word-wrap: initial;
-			overflow-x: auto;
-		}
-
-		.AccordionItem .echo + .echo {
-			margin-top: 5px;
-		}
-
-		.AccordionItem .echo {
-			margin: 0;
-			padding: 3px 5px;
-		}
-
-		.AccordionItem .error .value {
-			margin: 0;
-			padding: 0;
-			background-color: initial;
-			border: initial;
-			color: inherit;
-			font-size: 14px;
-		}
-
-		.AccordionItem .case .error .code {
-			margin-top: 1em;
-		}
-
-		.AccordionItem .line {
-			font-weight: bold;
-		}
-
-		.AccordionItem .case:not(.failed) {
-			float: left;
-		}
-
-		.AccordionItem .View > .error,
-		.AccordionItem .case {
-			border-width: 1px;
-			border-style: solid;
-			padding: 3px;
-			margin-top: 3px;
-			border-radius: 4px;
-		}
-
-		.AccordionItem .case + .case {
-			margin-left: 5px;
-		}
-
-		.Accordion + .Accordion {
-			clear: both;
-		}
-
-		.AccordionItem.active {
-			clear: both;
-		}
-
-		.AccordionItem.active ~ .AccordionItem:not(.active) {
-			margin-top: 0;
-		}
-
-		.AccordionItem:not(.active) {
-			float: left;
-		}
-
-		.AccordionItemTitle > .Label {
-			font-weight: bold;
-			float: left;
-		}
-
-		.AccordionItem:not(.active) > .AccordionItemTitle > .Link {
-			display: none;
-		}
-
-		.AccordionItemTitle > .Link {
-			float: right;
-			margin-top: 2px;
-		}
-
-		.AccordionItemTitle > .Link + .Link {
-			margin-right: 10px;
-		}
-
-		div.clear {
-			clear: both;
-		}
-
-		#InfoPanel.active + #Tests {
-			width: 50%;
-			float: left;
-		}
-
-		#InfoPanel:not(.active) {
-			display: none;
-		}
-
-		#InfoPanel.active {
-			width: 50%;
-			float: right;
-		}
-
-	</style>
+	<link rel="stylesheet" href="/view/frontend/phptestr.css" />
+	<link rel="stylesheet" href="/view/main.css" />
+	<link rel="stylesheet" href="/view/highlight.js/googlecode.css" />
+	<script type="text/javascript" src="/view/frontend/phptestr.js"></script>
 
 </head><body>
 
+
+
+
+
+
+<script type="template/docviewjs" id="Tmpl.TraceView"><Template>
+<PanelTitle>
+	<Button text="close" state="small" behavior="CloseStackTraceButton" class="float-right" />
+	<Txt text="Stack trace" />
+</PanelTitle>
+<% data.forEach( function ( trace ) { 
+	var code = {}.merge( trace );
+	delete code.file;
+	delete code.line;
+	code = _stringify( code );
+	%>
+	<Link text="<%! trace.file %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, line: trace.line } ) %>" />
+	<CodeBlock class="medium-margin-bottom"><![CDATA[<%= hljs.highlight( 'javascript', code ).value %>]]></CodeBlock>
+<% } ); %>
+</Template></script>
+
+<script type="template/docviewjs" id="Tmpl.CoverageView">
+<PanelTitle>
+	<Button text="close" state="small" behavior="CloseCoverageButton" class="float-right" />
+	<Txt text="Coverage" />
+</PanelTitle>
+</script>
+
+<script type="template/docviewjs" id="Tmpl.SourceView"><Template>
+<PanelTitle>
+	<Button text="open..." state="small" behavior="OpenSourceButton" class="float-right" />
+	<Txt id="title" />
+</PanelTitle>
+<CodeBlock id="code" />
+</Template></script>
+
+
 <script type="template/docviewjs" id="Tmpl.AppView">
-	<AppView>
-		<View id="InfoPanel">
-			<Coverage id="Coverage" />
-			<StackTrace id="StackTrace" />
-		</View>
-		<View id="Tests">
+	<AppView layout="Horizontal">
+		<View id="Tests" class="hfill">
 			<Accordion id="Failed" behaviour="" />
 			<Accordion id="Passed" behaviour="" />
 		</View>
 	</AppView>
 </script>
+
+
+
+
 
 <script type="template/docviewjs" id="Tmpl.Echoes">
 <% 
@@ -138,6 +69,10 @@
 %>
 </script>
 
+
+
+
+
 <script type="template/docviewjs" id="Tmpl.Error">
 <div class="error">
 	<div class="code"><%! data.Code %></div>
@@ -145,14 +80,16 @@
 		var err = data.Details.Error;
 		var scriptline = undefined;
 		if ( err.File != data.Script ) {
-			for ( var i = 0; i < err.Trace.length; ++i ) {
-				var trace = err.Trace[i];
-				if ( trace.file == data.Script ) {
-					scriptline = trace.line;
-					break;
+			if ( err.Trace ) {
+				for ( var i = 0; i < err.Trace.length; ++i ) {
+					var trace = err.Trace[i];
+					if ( trace.file == data.Script ) {
+						scriptline = trace.line;
+						break;
+					}
 				}
 			}
-			if ( scriptline == '' && err.ExceptionTrace !== undefined ) {
+			if ( scriptline == '' && err.ExceptionTrace ) {
 				for ( var i = 0; i < err.ExceptionTrace.length; ++i ) {
 					var trace = err.ExceptionTrace[i];
 					if ( trace.file == data.Script ) {
@@ -165,10 +102,14 @@
 		<div class="errdetails">
 			<%! err.Type %>: <%! err.File %>@<%! err.Line %>
 			<% if ( scriptline ) { %>
-			(@line <span class="line"><%! scriptline %></span>)
+				(@line <span class="line"><%! scriptline %></span>)
 			<% } %>
-			<% if ( err.Trace.length > 0 ) { %> <View:Button class="tiny" text="trace"></View:Button><% } %>
-			<% if ( err.ExceptionTrace !== undefined ) { %> <View:Button class="tiny" text="exception"></View:Button><% } %>
+			<% if ( err.Trace ) { %>
+				<view:button state="tiny" behavior="TraceButton" data="<%= $bind( err.Trace ) %>" class="some-margin-left" text="trace"></view:button>
+			<% } %>
+			<% if ( err.ExceptionTrace ) { %>
+				<view:button state="tiny" behavior="TraceButton" data="<%= $bind( err.ExceptionTrace ) %>"  class="small-margin-left" text="exception"></view:button>
+			<% } %>
 		</div>
 	<% } %>
 	<% if ( data.Value ) { %>
@@ -176,6 +117,10 @@
 	<% } %>
 </div>
 </script>
+
+
+
+
 
 <script type="template/docviewjs" id="Tmpl.Cases">
 <% data.forEach( function ( casea, i ) { %>
@@ -191,138 +136,29 @@
 </script>
 
 
+
+
+
 <script type="template/docviewjs" id="Tmpl.Title">
 	<View class="AccordionItemTitle">
-		<Link text="extract" url="<%! data.Url %>" target="_blank" />
-		<% if ( data.Coverage ) { %><Link text="coverage" url="<%! data.Url %>" /><% } %>
-		<Label text="<%! data.Script %>" />
+		<Label text="<%! data.Script + ( data.Args ? ': ' + data.Args : '' ) %>" />
+		<% if ( data.Url ) { %>
+			<Button state="tiny" class="some-margin-left" text="extract..." behavior="ExtractButton" data="<%= $bind( data.Url ) %>" target="_blank" />
+		<% } %>
+		<% if ( data.Coverage ) { %>
+			<Button state="tiny" class="some-margin-left" behavior="CoverageButton" text="coverage" data="<%= $bind( data.Result ) %>" />
+		<% } %>
 	</View>
 </script>
 
 
 
-<script type="text/javascript">
-
-//code coverage view	
-function Coverage () {
-	View.call( this );
-}
-
-Coverage.extend( View );
-
-//stack trace view
-function StackTrace () {
-	View.call( this );
-}
-
-StackTrace.extend( View );
-
-function _onTitleClick ( e ) {
-	var item = this.findParentView( '.AccordionItem' );
-	item.setState( 'active', !item.hasState( 'active' ) );
-	e.stopPropagation();
-}
-
-function _queryParams ( str ) {
-	if ( !String.isString( str ) || str.length == 0 ) {
-		str = location.search;
-	}
-	if ( str.charAt( 0 ) == '?' ) {
-		str = str.substr( 1 );
-	}
-	var params = str.split( '&' );
-	var ret = {};
-	for ( var i = 0, iend = params.length; i < iend; ++i ) {
-		var param = params[i];
-		var kv = param.split( '=' );
-		var key = kv[0];
-		var value = kv[1] !== undefined ? decodeURIComponent( kv[1] ) : null;
-		ret[key] = value;
-	}
-	return ret;
-}
-
-var BASEURL = location.href.replace( /\?.*/, '' );
-var QUERY = _queryParams();
-var TARGET = encodeURIComponent( QUERY.target || '.' );
-var FILTER = QUERY.filter;
 
 
-//test script view
-function TestScriptResult ( script, result ) {
-	View.AccordionItem.call( this );
-	
-	var extract = BASEURL + '?target=' + TARGET + '&filter=' + encodeURIComponent( script );
-	if ( result.Args !== undefined ) {
-		extract += '&args=' + encodeURIComponent( result.Args )
-	}
-	
-	var hascoverage = false;
-	if ( result.Cases !== undefined ) {
-		for ( var i = result.Cases.length - 1; i >= 0; --i ) {
-			if ( result.Cases[i].Coverage ) {
-				hascoverage = true;
-				break;
-			}
-		}
-	}
-	var title = $T( 'Tmpl.Title', { Script: script, Url: extract, Coverage: hascoverage } )
-	title.addView( new View().setClass( 'clear' ) );
-	title.on( 'click', _onTitleClick );
-	
-	var content = '';
-
-	if ( result.Echo !== undefined ) {
-		content += $TT( 'Tmpl.Echoes', result.Echo );
-	}
-	if ( result.Errors !== undefined ) {
-		for ( var i = result.Errors.length - 1; i >= 0; --i ) {
-			var error = result.Errors[i];
-			error.Script = result.Script;
-			if ( error.Details !== undefined && error.Details.Case !== undefined ) {
-				result.Cases[ error.Details.Case - 1 ].Failed = error;
-			}
-			else {
-				content += $TT( 'Tmpl.Error', error );
-			}
-		}
-	}
-	if ( result.Cases !== undefined ) {
-		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed !== undefined; } ) );
-		content += $TT( 'Tmpl.Cases', result.Cases.filter( function ( casea ) { return casea.Failed === undefined; } ) );
-	}
-	content = new View.HtmlArea( content );
-
-	this.addView( title );
-	this.addView( content );
-
-	if ( FILTER == script || result.Errors !== undefined || result.Echo !== undefined ) {
-		this.setState( 'active' );
-	}
-}
-
-TestScriptResult.extend( View.AccordionItem );
-
-</script>
 
 
-<script type="text/javascript">
-	
-	"use strict";
-
-	function OnScriptRunResult ( script, result ) {
-		app.view
-		        .findView( result.Errors !== undefined ? '#Failed' : '#Passed' )
-		        	.addView( new TestScriptResult( script, result ) );
-	}
-
-
-	var app = new App();
-	app.view = $T( 'Tmpl.AppView' );
-
-	//window.addEventListener( 'beforeunload', function () {
-	//	App.include( '/exit', 'js' );
-	//} );
-
-</script>
-
+<script type="text/javascript" src="/view/utils.js"></script>
+<script type="text/javascript" src="/view/highlight.js/highlight.pack.js"></script>
+<script type="text/javascript" src="/view/SourceView.js"></script>
+<script type="text/javascript" src="/view/TraceView.js"></script>
+<script type="text/javascript" src="/view/main.js"></script>

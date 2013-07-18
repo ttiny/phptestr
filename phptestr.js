@@ -37,14 +37,16 @@ function OnScriptRunResult ( script, result ) {
 		if ( err ) {
 			var scriptline = '';
 			if ( err.File != script ) {
-				for ( var i = 0; i < err.Trace.length; ++i ) {
-					var trace = err.Trace[i];
-					if ( trace.file == script ) {
-						scriptline = clr.def + ' ===> @from ' + trace.line;
-						break;
+				if ( err.Trace ) {
+					for ( var i = 0; i < err.Trace.length; ++i ) {
+						var trace = err.Trace[i];
+						if ( trace.file == script ) {
+							scriptline = clr.def + ' ===> @from ' + trace.line;
+							break;
+						}
 					}
 				}
-				if ( scriptline == '' && err.ExceptionTrace !== undefined ) {
+				if ( scriptline == '' && err.ExceptionTrace ) {
 					for ( var i = 0; i < err.ExceptionTrace.length; ++i ) {
 						var trace = err.ExceptionTrace[i];
 						if ( trace.file == script ) {

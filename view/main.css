@@ -1,0 +1,105 @@
+.AppView {
+	padding: 5px;
+}
+
+.AccordionItem {
+	margin: 5px;
+}
+
+.AccordionItem pre {
+	word-wrap: initial;
+	overflow-x: auto;
+}
+
+.AccordionItem .echo + .echo {
+	margin-top: 5px;
+}
+
+.AccordionItem .echo {
+	margin: 0;
+	padding: 3px 5px;
+}
+
+.AccordionItem .error .value {
+	margin: 0;
+	padding: 0;
+	background-color: initial;
+	border: initial;
+	color: inherit;
+	font-size: 14px;
+}
+
+.AccordionItem .case .error .code {
+	margin-top: 1em;
+}
+
+.AccordionItem .line {
+	font-weight: bold;
+}
+
+.AccordionItem .case:not(.failed) {
+	float: left;
+}
+
+.AccordionItem .View > .error,
+.AccordionItem .case {
+	border-width: 1px;
+	border-style: solid;
+	padding: 3px;
+	margin-top: 3px;
+	border-radius: 4px;
+}
+
+.AccordionItem .case + .case {
+	margin-left: 5px;
+}
+
+.Accordion + .Accordion {
+	clear: both;
+}
+
+.AccordionItem.active {
+	clear: both;
+}
+
+.AccordionItem.active ~ .AccordionItem:not(.active) {
+	margin-top: 0;
+}
+
+.AccordionItem:not(.active) {
+	float: left;
+}
+
+.AccordionItemTitle > .Label {
+	font-weight: bold;
+}
+
+.AccordionItem:not(.active) > .AccordionItemTitle > .Button {
+	display: none;
+}
+
+div.clear {
+	clear: both;
+}
+
+.Panel + #Tests {
+	display: none;
+}
+
+.Panel:first-child {
+	width: 50%;
+}
+
+.Panel:last-child {
+	margin-left: 1%;
+	width: 49%;
+}
+
+.Panel {
+	max-height: 95%;
+	overflow: auto;
+}
+
+.SourceView .CodeBlock:not(.active) {
+	display: none;
+}

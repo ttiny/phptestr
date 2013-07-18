@@ -1,10 +1,13 @@
 @import "../docviewjs/theme/default/theme.less";
-@import "./google-code-prettify/prettify.less";
 
 .AppView {
 	overflow-y: scroll;
 }
 
+
+.CodeBlock > ol > li.highlight {
+	background-color: @state-success-bg;
+}
 
 #Failed .AccordionItem {
 	background-color: @state-danger-bg;
@@ -49,27 +52,3 @@
 	color: lighten( @state-danger-text, 80% );
 	border-color: darken( @state-danger-border, 50% );
 }
-
-/*.error-bg {
-	background-color: @state-danger-bg;
-}
-
-.error-text {
-	color: @state-danger-text;
-}
-
-.error-border {
-	border-color: @state-danger-border;
-}
-
-.success-bg {
-	background-color: @state-success-bg;
-}
-
-.success-text {
-	color: @state-success-text;
-}
-
-.success-border {
-	border-color: @state-success-border;
-}*/

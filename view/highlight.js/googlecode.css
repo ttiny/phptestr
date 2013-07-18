@@ -1,0 +1,147 @@
+/*
+
+Google Code style (c) Aahan Krish <geekpanth3r@gmail.com>
+Modified for phptestr by Borislav Peev <borislav.asdf@gmail.com>
+
+*/
+
+.CodeBlock {
+  //display: block; padding: 0.5em;
+  //background: white;
+  color: black;
+}
+
+.CodeBlock .comment,
+.CodeBlock .template_comment,
+.CodeBlock .javadoc,
+.CodeBlock .comment * {
+  color: #800;
+}
+
+.CodeBlock .keyword,
+.CodeBlock .method,
+.CodeBlock .list .title,
+.CodeBlock .clojure .built_in,
+.CodeBlock .nginx .title,
+.CodeBlock .tag .title,
+.CodeBlock .setting .value,
+.CodeBlock .winutils,
+.CodeBlock .tex .command,
+.CodeBlock .http .title,
+.CodeBlock .request,
+.CodeBlock .status {
+  color: #008;
+}
+
+.CodeBlock .envvar,
+.CodeBlock .tex .special {
+  color: #660;
+}
+
+.CodeBlock .string,
+.CodeBlock .tag .value,
+.CodeBlock .cdata,
+.CodeBlock .filter .argument,
+.CodeBlock .attr_selector,
+.CodeBlock .apache .cbracket,
+.CodeBlock .date,
+.CodeBlock .regexp,
+.CodeBlock .coffeescript .attribute {
+  color: #080;
+}
+
+.CodeBlock .sub .identifier,
+.CodeBlock .pi,
+.CodeBlock .tag,
+.CodeBlock .tag .keyword,
+.CodeBlock .decorator,
+.CodeBlock .ini .title,
+.CodeBlock .shebang,
+.CodeBlock .prompt,
+.CodeBlock .hexcolor,
+.CodeBlock .rules .value,
+.CodeBlock .css .value .number,
+.CodeBlock .literal,
+.CodeBlock .symbol,
+.CodeBlock .ruby .symbol .string,
+.CodeBlock .number,
+.CodeBlock .css .function,
+.CodeBlock .clojure .attribute {
+  color: #066;
+}
+
+.CodeBlock .class .title,
+.CodeBlock .haskell .type,
+.CodeBlock .smalltalk .class,
+.CodeBlock .javadoctag,
+.CodeBlock .yardoctag,
+.CodeBlock .phpdoc,
+.CodeBlock .typename,
+.CodeBlock .tag .attribute,
+.CodeBlock .doctype,
+.CodeBlock .class .id,
+.CodeBlock .built_in,
+.CodeBlock .setting,
+.CodeBlock .params,
+.CodeBlock .variable,
+.CodeBlock .clojure .title {
+  color: #606;
+}
+
+.CodeBlock .css .tag,
+.CodeBlock .rules .property,
+.CodeBlock .pseudo,
+.CodeBlock .subst {
+  color: #000;
+}
+
+.CodeBlock .css .class, .CodeBlock .css .id {
+  color: #9B703F;
+}
+
+.CodeBlock .value .important {
+  color: #ff7700;
+  font-weight: bold;
+}
+
+.CodeBlock .rules .keyword {
+  color: #C5AF75;
+}
+
+.CodeBlock .annotation,
+.CodeBlock .apache .sqbracket,
+.CodeBlock .nginx .built_in {
+  color: #9B859D;
+}
+
+.CodeBlock .preprocessor,
+.CodeBlock .preprocessor * {
+  color: #444;
+}
+
+.CodeBlock .tex .formula {
+  background-color: #EEE;
+  font-style: italic;
+}
+
+.CodeBlock .diff .header,
+.CodeBlock .chunk {
+  color: #808080;
+  font-weight: bold;
+}
+
+.CodeBlock .diff .change {
+  background-color: #BCCFF9;
+}
+
+.CodeBlock .addition {
+  background-color: #BAEEBA;
+}
+
+.CodeBlock .deletion {
+  background-color: #FFC8BD;
+}
+
+.CodeBlock .comment .yardoctag {
+  font-weight: bold;
+}

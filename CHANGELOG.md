@@ -1,6 +1,8 @@
 1.0
 ---
 
+- New UI based on [docviewjs](https://github.com/Perennials/docviewjs).
+- Added stack traces display in the UI.
 - Added code coverage support via xdebug.
 - Added -coverage option.
 - Added -phpini option.
