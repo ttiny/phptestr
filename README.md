@@ -13,10 +13,38 @@ will remain untraced.
 - Code coverage.
 - Stack traces for errors and exceptions with realtime source display.
 
-**Table of contents:**
+
+What does a test look like?
+---------------------------
+
+```php
+<?
+
+testCase( 'My Test', function () {
+	test( true ); // this condition will pass
+	test( false ); // this condition will fail so will the test case
+} );
+
+?>
+```
+
+
+What does the GUI look like?
+----------------------------
+
+Color coded display for tests that passed or failed:
+![](https://raw.github.com/Perennials/phptestr/master/example/tests.png)
+
+Code coverage for each separete test case or for the whole test script:
+![](https://raw.github.com/Perennials/phptestr/master/example/coverage.png)
+
+Stack traces with realtime source display:
+![](https://raw.github.com/Perennials/phptestr/master/example/trace.png)
+
+
+Table of contents
+-----------------
 - [Status](#status)
-- [Quick example](#example)
-- [Screenshots](#screenshots)
 - [Very quick start](#quickstart)
 - [Usage](#usage)
   - [Starting the tests](#startingthetests)
@@ -39,34 +67,6 @@ Status
 Despite the round version number the project is not mature and has not been used for long time.
 At the moment I have only Windows available so only Windows is tested,
 but there is nothing Windows specific in the project.
-
-<a name="example"></a>
-What does a test look like?
----------------------------
-
-```php
-<?
-
-testCase( 'My Test', function () {
-	test( true ); //this condition will pass
-	test( false ); //this condition will fail so will the test case
-} );
-
-?>
-```
-
-<a name="screenshots"></a>
-What does the GUI look like?
-----------------------------
-
-Color coded display for tests that passed or failed:
-![](https://raw.github.com/Perennials/phptestr/master/example/tests.png)
-
-Code coverage for each separete test case or for the whole test script:
-![](https://raw.github.com/Perennials/phptestr/master/example/coverage.png)
-
-Stack traces with realtime source display:
-![](https://raw.github.com/Perennials/phptestr/master/example/coverage.png)
 
 
 <a name="quickstart"></a>
