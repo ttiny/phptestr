@@ -1,48 +1,63 @@
 .AppView {
-	padding: 5px;
+	overflow: visible;
 }
 
-.AccordionItem {
+body {
+	overflow: initial;
+}
+
+#Exit {
+	opacity: 0.3;
+	position: fixed;
+	bottom: 5px;
+	right: 5px;
+	/*transition: opacity 0.3s;*//*not working right over scrollbar in chrome*/
+}
+
+#Exit:hover {
+	opacity: 1;
+}
+
+#Tests .AccordionItem {
 	margin: 5px;
 }
 
-.AccordionItem pre {
-	word-wrap: initial;
+#Tests .AccordionItem pre {
 	overflow-x: auto;
 }
 
-.AccordionItem .echo + .echo {
+#Tests .AccordionItem .echo + .echo {
 	margin-top: 5px;
 }
 
-.AccordionItem .echo {
+#Tests .AccordionItem .echo {
 	margin: 0;
 	padding: 3px 5px;
 }
 
-.AccordionItem .error .value {
+#Tests .AccordionItem .error .value {
 	margin: 0;
 	padding: 0;
-	background-color: initial;
-	border: initial;
+	background-color: transparent;
+	border-width: 0;
 	color: inherit;
 	font-size: 14px;
 }
 
-.AccordionItem .case .error .code {
+#Tests .AccordionItem .case .error .code {
 	margin-top: 1em;
 }
 
-.AccordionItem .line {
+#Tests .AccordionItem .line {
 	font-weight: bold;
 }
 
-.AccordionItem .case:not(.failed) {
+#Tests .AccordionItem .case:not(.failed) {
 	float: left;
 }
 
-.AccordionItem .View > .error,
-.AccordionItem .case {
+#Tests .AccordionItem .View > .error,
+#Tests .AccordionItem .case {
 	border-width: 1px;
 	border-style: solid;
 	padding: 3px;
@@ -50,31 +65,31 @@
 	border-radius: 4px;
 }
 
-.AccordionItem .case + .case {
+#Tests .AccordionItem .case + .case {
 	margin-left: 5px;
 }
 
-.Accordion + .Accordion {
+#Tests .Accordion + .Accordion {
 	clear: both;
 }
 
-.AccordionItem.active {
+#Tests .AccordionItem.active {
 	clear: both;
 }
 
-.AccordionItem.active ~ .AccordionItem:not(.active) {
+#Tests .AccordionItem.active ~ .AccordionItem:not(.active) {
 	margin-top: 0;
 }
 
-.AccordionItem:not(.active) {
+#Tests .AccordionItem:not(.active) {
 	float: left;
 }
 
-.AccordionItemTitle > .Label {
+#Tests .AccordionItemTitle > .Label {
 	font-weight: bold;
 }
 
-.AccordionItem:not(.active) > .AccordionItemTitle > .Button {
+#Tests .AccordionItem:not(.active) > .AccordionItemTitle > .Button {
 	display: none;
 }
 
@@ -82,40 +97,51 @@ div.clear {
 	clear: both;
 }
 
-.Panel + #Tests {
+#Tests {
+	padding: 5px;
+}
+
+#Panels {
+	height: 100%;
+}
+
+#Panels:not(.active) {
 	display: none;
 }
 
-.Panel:first-child {
-	width: 50%;
+#Panels.active + #Tests {
+	display: none;
 }
 
-.Panel:last-child {
-	margin-left: 1%;
-	width: 49%;
+#Panels > .Panel {
+	-webkit-flex: 1 0 0;
+	    -ms-flex: 1;
+	        flex: 1 0 0;
 }
 
-.Panel {
-	max-height: 95%;
+/*fix for mozilla*/
+#Panels .PanelTitle > .Label > .Txt {
+	white-space: nowrap;
+}
+
+#Panels .Panel > .View:not(.PanelHeader) {
 	overflow: auto;
+}
+
+#Panels > .Panel:first-child {
+	margin: 10px 5px 10px 10px;
+}
+
+#Panels > .Panel:last-child {
+	margin: 10px 10px 10px 5px;
 }
 
 .SourceView .CodeBlock:not(.active) {
 	display: none;
 }
 
-.CoverageView .Label {
-	display: block;
-	font-weight: bold;
-	border-bottom: 1px solid #eeeeee;
-	margin-bottom: 8px;
-	padding-bottom: 1px;
-}
-
-.CoverageView .Link {
-	display: block;
-}
-
-.CoverageView .Link + .Label {
-	margin-top: 1em;
+.TraceView .CodeBlock {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border-width: 0;
 }

@@ -29,26 +29,40 @@
 	border-top-color: darken( @state-success-border, 10% );
 }
 
-.AccordionItem .echo {
+#Tests .AccordionItem .echo {
 	background-color: saturate( darken( @state-warning-bg, 10% ), 50% );
 	color: saturate( darken( @state-warning-text, 10% ), 50% );
 	border-color: darken( @state-warning-border, 10% );
 }
 
-.AccordionItem > .View:not(.AccordionItemTitle) > .error {
+#Tests .AccordionItem > .View:not(.AccordionItemTitle) > .error {
 	background-color: saturate( @state-danger-bg, 30% );
 	color: saturate( @state-danger-text, 30% );
 	border-color: saturate( darken( @state-danger-border, 50% ), 50% );
 }
 
-.AccordionItem .case {
+#Tests .AccordionItem .case {
 	background-color: darken( @state-success-bg, 10% );
 	color: darken( @state-success-text, 10% );
 	border-color: darken( @state-success-border, 10% );
 }
 
-.AccordionItem .case.failed {
+#Tests .AccordionItem .case.failed {
 	background-color: saturate( darken( @state-danger-bg, 50% ), 30% );
 	color: lighten( @state-danger-text, 80% );
 	border-color: darken( @state-danger-border, 50% );
 }
+
+/*
+.TraceView .AccordionItem.active {
+	
+	& {
+		border-color: @panel-info-border;
+	}
+	
+	.AccordionItemTitle {
+		color: @panel-info-text !important;
+		background-color: @panel-info-heading-bg;
+		border-color: @panel-info-border;
+	}
+}*/

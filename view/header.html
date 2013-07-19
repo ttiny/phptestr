@@ -14,21 +14,41 @@
 
 
 
+<script type="template/docviewjs" id="Tmpl.AppView">
+	<AppView>
+		<View id="Panels" layout="HorizontalFlex" />
+		<View id="Tests" class="hfill">
+			<Accordion id="Failed" behaviour="" />
+			<Accordion id="Passed" behaviour="" />
+		</View>
+		<Button text="Exit" id="Exit" state="inverse" />
+	</AppView>
+</script>
+
+
+
+
+
+
 
 <script type="template/docviewjs" id="Tmpl.TraceView"><Template>
-<PanelTitle>
-	<Button text="close" state="small" behavior="CloseTraceButton" class="float-right" />
-	<Txt text="Stack trace" />
+<PanelTitle layout="HorizontalFlex">
+	<Label class="fill no-overflow-x" text="Stack trace" />
+	<Button text="close" state="small" behavior="CloseTraceButton" />
 </PanelTitle>
-<% data.forEach( function ( trace ) { 
+<Accordion class="fill">
+<% data.forEach( function ( trace, i ) { 
 	var code = {}.merge( trace );
 	delete code.file;
 	delete code.line;
 	code = _stringify( code );
 	%>
-	<Link text="<%! trace.file %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, line: trace.line } ) %>" />
-	<CodeBlock class="medium-margin-bottom"><![CDATA[<%= hljs.highlight( 'javascript', code ).value %>]]></CodeBlock>
+	<AccordionItem <%= i == 0 ? ' state="active"' : ''%>>
+		<Label class="AccordionItemTitle" text="<%! trace.file %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, line: trace.line } ) %>" />
+		<CodeBlock><![CDATA[<%= hljs.highlight( 'javascript', code ).value %>]]></CodeBlock>
+	</AccordionItem>
 <% } ); %>
+</Accordion>
 </Template></script>
 
 
@@ -37,10 +57,11 @@
 
 
 <script type="template/docviewjs" id="Tmpl.CoverageView"><Template>
-<PanelTitle>
-	<Button text="close" state="small" behavior="CloseCoverageButton" class="float-right" />
-	<Txt text="Coverage" />
+<PanelTitle layout="HorizontalFlex">
+	<Label class="fill no-overflow-x" text="Coverage" />
+	<Button text="close" state="small" behavior="CloseCoverageButton" />
 </PanelTitle>
+<Accordion class="fill">
 <%
 	var cases = 0;
 	for ( var i = 0, iend = data.Cases.length; i < iend; ++i ) {
@@ -50,12 +71,14 @@
 		++cases;
 	}
 	if ( cases > 1 ) {
-		%><Label text="Combined coverage" /><%
-		var files = _getCoverageFiles( data, true );
-		var sorted = Object.keys( files ).sort();
-		sorted.forEach( function ( file ) {
-			%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
-		} );
+		%><AccordionItem state="active">
+			<Label class="AccordionItemTitle" text="Combined coverage" /><%
+			var files = _getCoverageFiles( data, true );
+			var sorted = Object.keys( files ).sort();
+			sorted.forEach( function ( file ) {
+				%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+			} );
+		%></AccordionItem><%
 	}
 %>
 <%
@@ -67,12 +90,15 @@
 		var files = _getCoverageFiles( data, i );
 		var sorted = Object.keys( files ).sort();
 		
-		%><Label text="<%! casea.Name %>" /><%
-		sorted.forEach( function ( file ) {
-			%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
-		} );
+		%><AccordionItem<%= cases == 1 && i == 0 ? ' state="active"' : '' %>>
+			<Label class="AccordionItemTitle" text="<%! casea.Name %>" /><%
+			sorted.forEach( function ( file ) {
+				%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+			} );
+		%></AccordionItem><%
 	}
 %>
+</Accordion>
 </Template></script>
 
 
@@ -81,26 +107,12 @@
 
 
 <script type="template/docviewjs" id="Tmpl.SourceView"><Template>
-<PanelTitle>
-	<Button text="open..." state="small" behavior="OpenSourceButton" class="float-right" />
-	<Txt id="title" />
+<PanelTitle layout="HorizontalFlex">
+	<Label class="fill no-overflow-x" id="title" />
+	<Button text="open..." state="small" behavior="OpenSourceButton" />
 </PanelTitle>
-<CodeBlock id="code" />
+<CodeBlock class="fill" id="code" />
 </Template></script>
-
-
-
-
-
-<script type="template/docviewjs" id="Tmpl.AppView">
-	<AppView layout="Horizontal">
-		<View id="Tests" class="hfill">
-			<Accordion id="Failed" behaviour="" />
-			<Accordion id="Passed" behaviour="" />
-		</View>
-	</AppView>
-</script>
-
 
 
 
@@ -181,6 +193,17 @@
 </script>
 
 
+
+<script type="template/docviewjs" id="Tmpl.Ie9">
+<HtmlArea class="vfill">
+	<div class="alert error align-center" style="margin-top: 4em; max-width: 50%;">
+		<h4>Your browser is not supported.</h4>
+		<p>This application requires recent browser.
+		Internet Explorer 10 is the minimum supported
+		version of this browser.</p>
+	</div>
+</HtmlArea>
+</script>
 
 
 

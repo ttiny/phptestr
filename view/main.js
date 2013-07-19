@@ -30,10 +30,25 @@ function _getCoverageFiles ( result, casei ) {
 	return ret;
 }
 
+var Windows = [];
+
+function Exit ( fromparent ) {
+	for ( var i = Windows.length - 1; i >= 0; --i ) {
+		try { Windows[i].Exit( true ); }
+		catch( e ) {}
+	}
+	if ( fromparent || !window.opener ) {
+		window.close()
+	}
+	else {
+		window.opener.Exit();
+	}
+}
+
 
 function ExtractButton ( button ) {
 	button.on( 'click', function ( e ) {
-		window.open( this.getData() );
+		Windows.push( window.open( this.getData() ) );
 		e.stopPropagation();
 	} );
 }
@@ -111,27 +126,28 @@ TestScriptResult.extend( View.AccordionItem );
 
 
 
-
-
-
-
-
-
-
-
-
+if ( document.documentMode < 10 ) {
+	document.getElementsByTagName( 'body' )[0].appendChild( $T( 'Tmpl.Ie9' ).getElement() );
+}
+else {
 	
 
-function OnScriptRunResult ( script, result ) {
-	app.view
-	        .findView( result.Errors !== undefined ? '#Failed' : '#Passed' )
-	        .addView( new TestScriptResult( script, result ) );
+	var OnScriptRunResult = function ( script, result ) {
+		app.view
+		        .findView( result.Errors !== undefined ? '#Failed' : '#Passed' )
+		        .addView( new TestScriptResult( script, result ) );
+	}
+
+
+	var app = new App();
+	app.view = $T( 'Tmpl.AppView' );
+
+	app.view.findView( '#Exit' ).on( 'click', function () {
+		var btn = this;
+		new HttpRequest( '/exit', function () {
+			app.view.removeView( btn );
+			Exit();
+		} ).send();
+	} );
+
 }
-
-
-var app = new App();
-app.view = $T( 'Tmpl.AppView' );
-
-//window.addEventListener( 'beforeunload', function () {
-//	App.include( '/exit', 'js' );
-//} );

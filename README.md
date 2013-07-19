@@ -8,7 +8,7 @@ script in a new sandbox thus ensuring no kind of error could break it and no err
 will remain untraced.
 
 **Features:**
-- Easy to start and use, no dependecies to install.
+- Easy to start and use, no dependencies to install.
 - Short and uncomplicated tests.
 - Code coverage.
 - Stack traces for errors and exceptions with realtime source display.
@@ -19,12 +19,10 @@ What does a test look like?
 
 ```php
 <?
-
 testCase( 'My Test', function () {
 	test( true ); // this condition will pass
 	test( false ); // this condition will fail so will the test case
 } );
-
 ?>
 ```
 
@@ -35,41 +33,41 @@ What does the GUI look like?
 Color coded display for tests that passed or failed:
 ![](https://raw.github.com/Perennials/phptestr/master/example/tests.png)
 
-Code coverage for each separete test case or for the whole test script:
+Code coverage for each separate test case or for the whole test script:
 ![](https://raw.github.com/Perennials/phptestr/master/example/coverage.png)
 
-Stack traces with realtime source display:
+Stack traces for errors and exceptions with realtime source display:
 ![](https://raw.github.com/Perennials/phptestr/master/example/trace.png)
 
 
 Table of contents
 -----------------
 - [Status](#status)
-- [Very quick start](#quickstart)
+- [Very quick start](#very-quick-start)
 - [Usage](#usage)
-  - [Starting the tests](#startingthetests)
-  - [Code coverage](#codecoverage)
-  - [Detailed configuration](#configuration)
-  - [Default configuration](#defaultconfig)
-  - [Wildcard patterns](#patterns)
-  - [To sum up the preparation](#preparationsummary)
-  - [Writing tests](#writingtests)
-  - [Using the GUI](#usingthegui)
-- [Command line options](#cliusage)
+  - [Starting the tests](#starting-the-tests)
+  - [Code coverage](#code-coverage)
+  - [Detailed configuration](#detailed-configuration)
+  - [Default configuration](#default-configuration)
+  - [Wildcard patterns](#wildcard-patterns)
+  - [To sum up the preparation](#to-sum-up-the-preparation)
+  - [Writing tests](#writing-tests)
+  - [Using the GUI](#using-the-gui)
+- [Command line options](#command-line-options)
 - [Internals](#internals)
 - [Credits](#credits)
   - [Authors](#authors)
 
-<a name="status"></a>
+
 Status
 ------
-**This is release version 1.0 (peparing the release)**.
-Despite the round version number the project is not mature and has not been used for long time.
+**This is release version 1.0**.
+Despite the round version number the project has not been used for long time.
 At the moment I have only Windows available so only Windows is tested,
 but there is nothing Windows specific in the project.
 
 
-<a name="quickstart"></a>
+
 Very quick start
 ----------------
 1. Assuming you already have `PHP 5.3` or higher installed in your path.
@@ -86,7 +84,7 @@ Further:
   [docs/index.html#file/lib/test_environment.php](#file/lib/test_environment.php)).
 
 
-<a name="usage"></a>
+
 Usage
 -----
 Since this is tester for PHP, you need to have `PHP 5.3` or higher installed, there are no other dependencies.
@@ -97,7 +95,7 @@ You can start the tests in either GUI (browser) mode or CLI mode. This is select
 By just starting `phptestr` it will start in GUI mode, opening your default browser and listening on a specific
 port for commands issued by the browser. List of all available command line options is found below.
 
-<a name="startingthetests"></a>
+
 ### Starting the tests
 To start the tests just run `phptestr` and point it to the location of your tests,
 e.g. `http://127.0.0.1:3355/phptestr?target=example` - this will run the example
@@ -114,7 +112,7 @@ called `args`. For example `http://127.0.0.1:3355/phptestr?target=example&filter
 or `phptestr -target=example -filter=test_5.php -args=1 -args=2` will start the fifth example of phptestr,
 which can accept arguments, and it will display the value of 'args'.
 
-<a name="codecoverage"></a>
+
 ### Code coverage
 For code coverage to work you will need to install and configure xdebug with your PHP installation.
 Then you need to set `xdebug.coverage_enable = On` in your php.ini file. Finally you need to pass `-coverage`
@@ -122,7 +120,7 @@ argument to phptestr if you want it to collect code coverage information. You ca
 config (enabled by default) and then you don't need to pass extra command line arguments.
 More information how to enable code coverage in xdebug is found [here](http://xdebug.org/docs/code_coverage).
 
-<a name="configuration"></a>
+
 ### Detailed configuration
 By loading the directory 'example', phptestr checks for the presence of a file named `phptestr.json`.
 This file could be used to specify additional options for your project. None of these
@@ -151,14 +149,14 @@ settings is mandatory.
 - `phpbin` - PHP binary to use for executing the scripts.
 - `phpini` - php.ini file to use for configuring PHP.
 
-<a name="defaultconfig"></a>
+
 ### Default configuration
 On startup phptestr will attempt to load `phptestr.json` from its own directory. This file has the same
 format as in the previous section and whatever is found there will be used as default configuration.
 This is a good place to configure the directory of your PHP installation. By default code coverage
 is enabled for all tests through this file.
 
-<a name="patterns"></a>
+
 ### Wildcard patterns
 Patterns are simple regular expressions. `*` matches everything but forward slash `/`, and `**`
 matches everything. Non greedy and only forward slashes are supported (they work fine on Windows).
@@ -168,7 +166,7 @@ patterns can be delimited with a pipe `|`. For example `*.php4|*.php5` will matc
 with extension 'php4' or 'php5'. Additionally a list of exclude patterns can be appended after a
 colon `:`. Files and directories matching one of the exclude patterns will be filtered out.
 
-<a name="preparationsummary"></a>
+
 ### To sum up the preparation
 Lets say we have a folder named 'tests' where we will place our test scripts. We create a file named
 `phptestr.json` in this folder and place this inside the file:
@@ -194,7 +192,7 @@ scripts should not output anything to the console (stdout) or you will get error
 If you need to output something while testing use the appropriate functions provided by the
 test environment.
 
-<a name="writingtests"></a>
+
 ### Writing tests
 Test are created by writing PHP files describing groups of test conditions. The groups
 are called "test cases". And each condition is a test.
@@ -289,7 +287,7 @@ of phptestr. In the docs, under the same section, you can also check the referen
 individual function.
 
 
-<a name="usingthegui"></a>
+
 ### Using the GUI
 Starting `phptestr -target=example` will show the results in a simple graphical interface. Each test script
 is represented by a box with the title of the file. Scripts that passed all tests will be
@@ -303,13 +301,11 @@ Information echoed by the scripts will be shown in yellow boxes.
 There is additional link called "extract..." next to the title of the file. This will open 
 the selected script, without other scripts, in a new browser tab. Useful while developing or debugging.
 Finally if code coverage is enabled you should will find a "coverage" button in the title. Coverage
-is only available for test scripts without any errors.
+is only available for test scripts with successful test cases.
 
 Screenshot of the results of the example tests can be found in [example/tests.png](https://raw.github.com/Perennials/phptestr/master/example/tests.png).
 
-The GUI is tested only on Google Chrome at the moment, but there is no reason other browsers wouldn't work.
 
-<a name="cliusage"></a>
 Command line options
 --------------------
 
@@ -360,7 +356,7 @@ Optional, only supported in GUI mode. Will make phptestr listen for browser comm
 and port. Defaults to 127.0.0.1:3355 .
 
 
-<a name="internals"></a>
+
 Internals
 ---------
 
@@ -368,13 +364,13 @@ Internals
 `phptestr test` will check that phptestr is working as expected.
 
 
-<a name="credits"></a>
+
 Credits
 -------
 Third-party software used:
 - [Highlight.js](https://github.com/isagalaev/highlight.js)
 - [node-open](https://github.com/pwnall/node-open)
 
-<a name="authors"></a>
+
 ### Authors
 Borislav Peev (borislav.asdf at gmail dot com)

@@ -1,12 +1,13 @@
 function OpenSourceButton ( button ) {
 	button.on( 'click', function ( e ) {
-		app.view.sourceview.open();
+		Panels.getView().sourceview.open();
 	} );
 }
 
 function SourceView () {
 	View.Panel.call( this );
 	this.setClass( 'SourceView' );
+	this.setLayout( 'VerticalFlex' );
 	this.addView( $T( 'Tmpl.SourceView' ) );
 	this._code = this.findView( '#code' ).setState( 'active', false );
 	this._title = this.findView( '#title' );
@@ -17,9 +18,13 @@ SourceView.extend( View.Panel, {
 		this._open = new HttpRequest( '/open?' + HttpRequest.urlEncode( { file: this._file } ) ).send();
 	},
 
-	load: function ( file ) {
-		if ( this._load || this._file == file ) {
+	load: function ( file, lines, scrollintoview ) {
+		if ( this._load ) {
 			return false;
+		}
+		if ( this._file == file ) {
+			this._highlight( lines, scrollintoview );
+			return true;
 		}
 		var that = this;
 		this._title.setText( file );
@@ -31,23 +36,18 @@ SourceView.extend( View.Panel, {
 			if ( res.Success ) {
 				that._loaded = true;
 				var code = hljs.highlight( 'php', res.Data ).value.split( '\n' ).join( '</li><li>' );
+				code = hljs.fixMarkup( code, '  ' );
 				if ( code.length ) {
 					code = '<ol><li>' + code + '</li></ol>';
 				}
 				that._code.setHtml( code );
 				that._code.setState( 'active' );
-				if ( that._highlight ) {
-					that.highlight.apply( that, that._highlight );
-					that._highlight = null;
-				}
+				that._highlight( lines, scrollintoview );
 			}
 		} ).send();
 	},
 
-	highlight: function ( lines, scrollintoview ) {
-		if ( !this._loaded ) {
-			this._highlight = arguments;
-		}
+	_highlight: function ( lines, scrollintoview ) {
 		if ( !(lines instanceof Array) ) {
 			lines = [ lines ];
 		}

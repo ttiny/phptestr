@@ -99,14 +99,15 @@ this.dispatchEvent(new Semaphore.SemaphoreReleased())}},lock:function(){++this._
 function View(a){var a=(a instanceof HTMLElement)?a:document.createElement(a||"div");
 Object.defineProperty(a,"_view",{value:this});a.classList.add("View");this._element=a;
 this._layout=null;this._behaviors=null;this._events={}}View.defineStatic({Data:function(a){var b=++View.Data._lastId;
-View.Data._bindings[b]=a;return b}});View.Data.defineStatic({_lastId:0,_bindings:{}});
-var $bind=View.Data;Object.defineProperty(HTMLElement.prototype,"getView",{value:function(){return this._view
-},writable:true});View.define({setData:function(a){this._data=View.Data._bindings[a];
-delete View.Data._bindings[a];return this},getData:function(){return this._data},setLayout:function(a){if(a===null){if(this._layout){this._layout.detach()
+View.Data._bindings[b]=a;return b}});View.Data.defineStatic({_lastId:0,_bindings:{},release:function(a){delete View.Data._bindings[a]
+}});Object.defineProperty(HTMLElement.prototype,"getView",{value:function(){return this._view
+},writable:true});View.define({setData:function(a){this._dataId=a;this._data=View.Data._bindings[a];
+return this},getData:function(){return this._data},setLayout:function(a){if(a===null){if(this._layout){this._layout.detach()
 }}else{if(!(a instanceof Layout)){a=Layout.findByName(a);if(a===null){return this.setLayout(a)
-}else{a=new a(this)}}}this._layout=a;return this},addBehavior:function(a){if(!(a instanceof Behavior)){a=Behavior.findByName(a);
-if(a!==null){a=new a(this)}}if(a instanceof Behavior){(this._behaviors||(this._behaviors=[])).push(a);
-return true}return false},getBehaviors:function(){return this._behaviors},getElement:function(){return this._element
+}else{a=new a(this)}}}this._layout=a;return this},addBehavior:function(e){if(String.isString(e)){if(e.indexOf(" ")>0){e=e.split(" ")
+}else{e=[e]}for(var c=0,d=e.length;c<d;++c){var a=Behavior.findByName(e[c]);if(a===null){throw new Error("Unknown behavior "+e[c])
+}this.addBehavior(new a(this))}return this}(this._behaviors||(this._behaviors=[])).push(e);
+return this},getBehaviors:function(){return this._behaviors},getElement:function(){return this._element
 },findView:function(a){var b=this._element.querySelector(a);return b?b._view:null
 },findParentView:function(a){var b=this._element;while(b=b.parentNode){if(b._view&&b.matches(a)){return b._view
 }}return null},addView:function(b,a){var d=this._element;if(b instanceof Array){if(a=="first"&&d.firstChild){for(var c=b.length-1;
@@ -166,7 +167,7 @@ for(var e=k.length-1;e>=0;--e){f=k[e];k[e]=f.charAt(0).toUpperCase()+f.substr(1)
 if(f.tagName=="Template"){var e=[];f=f.firstChild;while(f){if(f.nodeType==f.ELEMENT_NODE){var d=b.createViewFromElement(f);
 if(d instanceof View){e.push(d)}}f=f.nextSibling}return e.length>0?e:null}else{return b.createViewFromElement(f)
 }}});function c(f,e){var d=f instanceof TextTemplate?f:$TT(f);return b.loadString(d.render(e)).createView()
-}a.$T=c;a.ViewTemplate=b})(this);"use strict";View.TActiveView=function(){this._active=null
+}a.$T=c;a.$bind=View.Data;a.ViewTemplate=b})(this);"use strict";View.TActiveView=function(){this._active=null
 };View.TActiveView.defineStatic({fromTemplate:function(a,b){var c=a._element.firstChild;
 while(c){if(c._view.hasState("active")){a.setActive(c._view);break}c=c.nextSibling
 }}});View.TActiveView.prototype={setActive:function(b){var d=this._active;if(b===d){return false
@@ -304,10 +305,14 @@ this._onClick=null;this._strip=null}});View.TabStrip.prototype.AutoBehavior=c;a.
 }Layout.findByName=function(a){if(typeof a=="string"||a instanceof String){return Layout[a]||null
 }return null};Layout.define({detach:function(){this._view.getElement().classList.remove("Layout");
 this._view=null}});"use strict";Layout.Horizontal=function(a){Layout.call(this,a);
-a.getElement().classList.add("Layout-Horizontal")};Layout.Horizontal.extend(Layout,{detach:function(){this._view.getElement().classList.remove("Layout-Horizontal");
-Layout.prototype.detach.call(this)}});"use strict";Layout.Vertical=function(a){Layout.call(this,a);
-a.getElement().classList.add("Layout-Vertical")};Layout.Vertical.extend(Layout,{detach:function(){this._view.getElement().classList.remove("Layout-Vertical");
-Layout.prototype.detach.call(this)}});"use strict";(function(e){function d(m,n){var o=this;
+a.getElement().classList.add("Horizontal")};Layout.Horizontal.extend(Layout,{detach:function(){this._view.getElement().classList.remove("Horizontal");
+Layout.prototype.detach.call(this)}});Layout.HorizontalFlex=function(a){Layout.Horizontal.call(this,a);
+a.getElement().classList.add("flex")};Layout.HorizontalFlex.extend(Layout.Horizontal,{detach:function(){this._view.getElement().classList.remove("flex");
+Layout.Horizontal.prototype.detach.call(this)}});"use strict";Layout.Vertical=function(a){Layout.call(this,a);
+a.getElement().classList.add("Vertical")};Layout.Vertical.extend(Layout,{detach:function(){this._view.getElement().classList.remove("Vertical");
+Layout.prototype.detach.call(this)}});Layout.VerticalFlex=function(a){Layout.Vertical.call(this,a);
+a.getElement().classList.add("flex")};Layout.VerticalFlex.extend(Layout.Vertical,{detach:function(){this._view.getElement().classList.remove("flex");
+Layout.Vertical.prototype.detach.call(this)}});"use strict";(function(e){function d(m,n){var o=this;
 var k=function(){};k.prototype=n||this;var l=new k;if(n){l.parent=n}if(m){l.merge(m)
 }return l}var h={};var b=/[\?\.\+\[\]\(\)\{\}\$\^\\\|]/g;var a=/\*\*/g;var j=/\*(?!\?)/g;
 var f=/{([\s\S]+?)}/g;function i(m,p,o,l){for(var k in m){var n=m[k];if(Object.isObject(n)){i(n,p,o,l?l+k+".":k+".")
