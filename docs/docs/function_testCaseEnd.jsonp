@@ -1,1 +1,0 @@
-jsdocgen_data("function_testCaseEnd.jsonp",{"summary":"Marks the end of a test case.","tags":{"author":["Borislav Peev &lt;<a href=\"mailto:borislav&#46;asdf@gmail&#46;com\">borislav.asdf@gmail.com</a>&gt;"],"file":{"name":"lib/test_environment.php","startLine":99,"endLine":101}},"def":{"type":"function","return":{"byref":false},"name":"testCaseEnd"}});
