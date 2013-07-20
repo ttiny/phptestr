@@ -19,6 +19,7 @@ function CompareResults ( file, results, expected, ret ) {
 				}
 			}
 		}
+		delete cmp['Script'];
 		delete cmp['Cases'];
 		delete cmp['Url'];
 	}
