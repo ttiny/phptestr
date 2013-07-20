@@ -1,3 +1,7 @@
 [submodule "view/docviewjs"]
 	path = view/docviewjs
 	url = https://github.com/Perennials/docviewjs
+[submodule "docs"]
+	path = docs
+	url = https://github.com/Perennials/phptestr
+	branch = gh-pages

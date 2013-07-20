@@ -9,12 +9,10 @@ the test host will capture the errors.
 
 The simplest test looks like this (the name is optional):
 ```php
-<?
 testCase( 'My Test', function () {
 	test( true ); //this condition will pass
 	test( false ); //this condition will fail so will the test case
 } );
-?>
 ```
 
 Two ways to make a test case:
@@ -34,7 +32,7 @@ testCaseEnd();
 It is popssible to test program flow:
 ```php
 // like this
-testCase( function() {
+testCase( function () {
 	if ( 1 ) {
 		// fail the test explicitly
 		testFailed( 'Unexpected program flow' );
@@ -42,23 +40,23 @@ testCase( function() {
 } );
 
 // or like this
-testCase( function() {
+testCase( function () {
 	
 	// set some expectations
-	testExpect(1, 2, 3);
+	testExpect( 1, 2, 3 );
 	if ( 1 ) {
 		// output something expected
-		testOut(1);
+		testOut( 1 );
 	}
 	
 	if ( 0 ) {
 		// output something expected
-		testOut(2);
+		testOut( 2 );
 	}
 	
 	if ( 3 ) {
 		// output something expected
-		testOut(3);
+		testOut( 3 );
 	}
 
 	// the test case will fail because the output is 1, 3 and 1, 2, 3 is expected
@@ -68,7 +66,7 @@ testCase( function() {
 
 It is also possible to test scripts that will crash:
 ```php
-testCase( function() {
+testCase( function () {
 	// this test case will succeed only if the script crashes
 	testWillCrash();
 	$a->crash();

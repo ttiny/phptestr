@@ -18,12 +18,10 @@ What does a test look like?
 ---------------------------
 
 ```php
-<?
 testCase( 'My Test', function () {
 	test( true ); // this condition will pass
 	test( false ); // this condition will fail so will the test case
 } );
-?>
 ```
 
 
@@ -126,7 +124,7 @@ By loading the directory 'example', phptestr checks for the presence of a file n
 This file could be used to specify additional options for your project. None of these
 settings is mandatory.
 
-```js
+```json
 {
 	"dir": "",
 	"init": "",
@@ -171,7 +169,7 @@ colon `:`. Files and directories matching one of the exclude patterns will be fi
 Lets say we have a folder named 'tests' where we will place our test scripts. We create a file named
 `phptestr.json` in this folder and place this inside the file:
 
-```js
+```json
 {
 	"init": "init_tests.php",
 	"pattern": "**/**.php:_*|**/_*"
@@ -199,12 +197,10 @@ are called "test cases". And each condition is a test.
 
 The simplest test looks like this (the name is optional):
 ```php
-<?
 testCase( 'My Test', function () {
 	test( true ); //this condition will pass
 	test( false ); //this condition will fail so will the test case
 } );
-?>
 ```
 
 Two ways to make a test case:
@@ -224,7 +220,7 @@ testCaseEnd();
 It is popssible to test program flow:
 ```php
 // like this
-testCase( function() {
+testCase( function () {
 	if ( 1 ) {
 		// fail the test explicitly
 		testFailed( 'Unexpected program flow' );
@@ -232,10 +228,10 @@ testCase( function() {
 } );
 
 // or like this
-testCase( function() {
+testCase( function () {
 	
 	// set some expectations
-	testExpect(1, 2, 3);
+	testExpect( 1, 2, 3 );
 	if ( 1 ) {
 		// output something expected
 		testOut(1);
@@ -258,7 +254,7 @@ testCase( function() {
 
 It is also possible to test scripts that will crash:
 ```php
-testCase( function() {
+testCase( function () {
 	// this test case will succeed only if the script crashes
 	testWillCrash();
 	$a->crash();

@@ -1,9 +1,9 @@
 <?
 
 // testing program flow
-testCase( function() {
+testCase( function () {
 	// set some expectations
-	testExpect(1, 2, 3);
+	testExpect( 1, 2, 3 );
 	if ( 1 ) {
 		// output something expected
 		testOut( 1 );
