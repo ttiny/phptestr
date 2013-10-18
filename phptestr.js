@@ -109,6 +109,11 @@ function OnScriptRunResult ( script, result ) {
 
 
 var Platform = require( argv.cli ? './lib/CliHost.js' : './lib/HttpHost.js' );
+
+if ( !argv.target && Fs.existsSync( './phptestr.json' ) ) {
+	argv.target = '.';
+}
+
 var platform = new Platform( argv, function ( request, response, callback ) {
 	
 	

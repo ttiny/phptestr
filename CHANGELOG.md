@@ -1,3 +1,8 @@
+1.1
+---
+
+- phptestr can be started without any arguments and it will autodetect `phptestr.json` in the working directory.
+
 1.0
 ---
 
