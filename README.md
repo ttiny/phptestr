@@ -68,7 +68,7 @@ but there is nothing Windows specific in the project.
 
 Very quick start
 ----------------
-1. Assuming you already have `PHP 5.3` or higher installed in your path.
+1. Assuming you already have `PHP 5.3` or higher installed in your path with short tags enabled.
 2. Go to where you have downloaded phptestr and start `phptestr -target=example` - this should open a new browser window
   for the address `http://127.0.0.1:3355/phptestr?target=example` and show the results of the tests.
 
@@ -85,7 +85,8 @@ Further:
 
 Usage
 -----
-Since this is tester for PHP, you need to have `PHP 5.3` or higher installed, there are no other dependencies.
+Since this is tester for PHP, you need to have `PHP 5.3` or higher installed and it must be configured to
+accept short tags, there are no other dependencies.
 If you are not using Windows, you will need to convert phptestr.bat to shell script (it is two lines long),
 and also download the Node.js binary for your system. Other OS-es will be officially supported in the future.
 
