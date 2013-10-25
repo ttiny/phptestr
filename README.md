@@ -13,6 +13,9 @@ will remain untraced.
 - Code coverage.
 - Stack traces for errors and exceptions with realtime source display.
 
+*__Warning: GitHub's zip files are broken and ignore some files from the repository.
+You can either do full checkout (with submodules) or I will upload a proper zip file
+soon when I have some spare time.__*
 
 What does a test look like?
 ---------------------------
