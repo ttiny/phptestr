@@ -253,7 +253,7 @@ testCase( function () {
 
 	// the test case will fail because the output is 1, 3 and 1, 2, 3 is expected
 	testCheckExpect();
-}); 
+} ); 
 ```
 
 It is also possible to test scripts that will crash:
