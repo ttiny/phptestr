@@ -1,0 +1,15 @@
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+	DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+	SOURCE="$(readlink "$SOURCE")"
+	[[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+export NODE_PATH=$DIR/lib/node_modules:$DIR/view/docviewjs/deps/node/node_modules
+export NODE_BIN=$DIR/view/docviewjs/deps/node/node-$(uname)
+if [[ $1 == "test" ]]; then
+	"$NODE_BIN" "$DIR/tests.js" $@
+else 
+	"$NODE_BIN" "$DIR/phptestr.js" $@
+fi

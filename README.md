@@ -62,16 +62,13 @@ Table of contents
 
 Status
 ------
-**This is release version 1.0**.
-Despite the round version number the project has not been used for long time.
-At the moment I have only Windows available so only Windows is tested,
-but there is nothing Windows specific in the project.
+**This is release version 1.0**, stable release, tested under Windows and OSX.
 
 
 
 Very quick start
 ----------------
-1. Assuming you already have `PHP 5.3` or higher installed in your path with short tags enabled.
+1. Assuming you already have `PHP 5.3` or higher installed in your path.
 2. Go to where you have downloaded phptestr and start `phptestr -target=example` - this should open a new browser window
   for the address `http://127.0.0.1:3355/phptestr?target=example` and show the results of the tests.
 
@@ -176,7 +173,7 @@ Lets say we have a folder named 'tests' where we will place our test scripts. We
 ```json
 {
 	"init": "init_tests.php",
-	"pattern": "**/**.php:_*|**/_*"
+	"pattern": "*/**.php:**/_*"
 }
 ```
 This will tell `phptestr` to test all files with extension 'php' in all subfolders, but not in the

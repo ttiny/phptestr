@@ -13,6 +13,8 @@ function SourceView () {
 	this._title = this.findView( '#title' );
 }
 
+SourceView.RE_NOHL = /^[ \t\(\);\{\}]*$/;
+
 SourceView.extend( View.Panel, {
 	open: function () {
 		this._open = new HttpRequest( '/open?' + HttpRequest.urlEncode( { file: this._file } ) ).send();
@@ -60,9 +62,14 @@ SourceView.extend( View.Panel, {
 		for ( var i = lines.length - 1; i >= 0; --i ) {
 			var li = lis[lines[i]-1];
 			if ( li ) {
-				li.classList.add( 'highlight' );
-				if ( scrollintoview && lines.length == 1 ) {
-					li.scrollIntoView();
+				// xdebug reports coverage for } some times
+				if ( scrollintoview || !li.textContent.match( SourceView.RE_NOHL ) ) {
+					li.classList.add( 'highlight' );
+				}
+				if ( scrollintoview ) {
+					var visibleLines = el.offsetHeight / li.offsetHeight;
+					var lineToScroll = parseInt( Math.max( lines[i] - visibleLines/2 - 1, 0 ) );
+					lis[lineToScroll].scrollIntoView();
 				}
 			}
 		}

@@ -1,0 +1,1 @@
+./phptestr -target=example

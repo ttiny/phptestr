@@ -42,6 +42,9 @@
 	delete code.file;
 	delete code.line;
 	code = _stringify( code );
+	if ( code == '{}' ) {
+		code = '';
+	}
 	%>
 	<AccordionItem <%= i == 0 ? ' state="active"' : ''%>>
 		<Label class="AccordionItemTitle" text="<%! trace.file %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, line: trace.line } ) %>" />
