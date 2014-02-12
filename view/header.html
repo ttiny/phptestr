@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="/view/main.css" />
 	<link rel="stylesheet" href="/view/highlight.js/googlecode.css" />
 	<script type="text/javascript" src="/view/frontend/phptestr.js"></script>
+	<script type="text/javascript" src="/view/frontend/settings.js"></script>
 
 </head><body>
 
@@ -112,7 +113,7 @@
 <script type="template/docviewjs" id="Tmpl.SourceView"><Template>
 <PanelTitle layout="HorizontalFlex">
 	<Label class="fill no-overflow-x" id="title" />
-	<Button text="open..." state="small" behavior="OpenSourceButton" />
+	<Button text="open..." state="small<%= Argv.remotemode ? ' disabled' : ''  %>" behavior="OpenSourceButton" />
 </PanelTitle>
 <CodeBlock class="fill" id="code" />
 </Template></script>

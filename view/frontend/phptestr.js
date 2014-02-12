@@ -20,7 +20,9 @@ for(var c=0,d=e.length;c<d;++c){var b=e[c];if(f.call(a,this[b],b,this)!==true){d
 }}return this},writable:true});"use strict";Object.defineProperty(Array.prototype,"duplicate",{value:function(){var a=[].concat(this);
 for(var b=a.length-1;b>=0;--b){var c=a[b];if(c instanceof Object&&c.duplicate instanceof Function){a[b]=c.duplicate()
 }}return a},writable:true});Object.defineProperty(Array.prototype,"merge",{value:Array.prototype.concat,writable:true});
-"use strict";Object.defineProperty(String,"isString",{value:function(a){return typeof a=="string"||a instanceof String
+Object.defineProperty(Array.prototype,"last",{get:function(){var a=this.length-1;
+return a>=0?this[a]:undefined},set:function(a){var b=this.length-1;return b>=0?this[b]=a:this[0]=a
+}});"use strict";Object.defineProperty(String,"isString",{value:function(a){return typeof a=="string"||a instanceof String
 },writable:true});Object.defineProperty(String.prototype,"splitFirst",{value:function(b){if(String.isString(b)){var a=this.indexOf(b);
 if(a>=0){return{left:this.substr(0,a),right:this.substr(a+b.length)}}}else{var c=b.exec(this);
 if(c!==null){return{left:this.substr(0,c.index),right:this.substr(c.index+c[0].length)}
@@ -30,8 +32,8 @@ if(!c.global){c=new RegExp(c.source,(c.ignoreCase?"i":"")+(c.multiline?"m":"")+"
 }while(a=c.exec(this)){d=a}if(d!==null){return{left:this.substr(0,d.index),right:this.substr(d.index+d[0].length)}
 }}return{left:this}},writable:true});if(String.prototype.startsWith===undefined){Object.defineProperty(String.prototype,"startsWith",{enumerable:false,configurable:false,writable:false,value:function(b,a){a=a||0;
 if(this.length<a+b.length){return false}return this.indexOf(b,a)===a}})}Object.defineProperty(String.prototype,"count",{value:function(c){var a=0;
-for(var b=0;(b=this.indexOf(c,b))>=0;b+=c.length){++a}return a;return{left:this}},writable:true});
-"use strict";Object.defineProperty(Function.prototype,"define",{value:function(a){var c=this.prototype;
+for(var b=0;(b=this.indexOf(c,b))>=0;b+=c.length){++a}return a},writable:true});"use strict";
+Object.defineProperty(Function.prototype,"define",{value:function(a){var c=this.prototype;
 for(var b in a){Object.defineProperty(c,b,{value:a[b],writable:true})}return this
 },writable:true});Object.defineProperty(Function.prototype,"defineStatic",{value:function(a){for(var b in a){Object.defineProperty(this,b,{value:a[b],writable:true})
 }return this},writable:true});Object.defineProperty(Function.prototype,"extend",{value:function(b,a){this.prototype=Object.create(b.prototype);
@@ -49,8 +51,11 @@ return function(){return b.apply(this,arguments.length?c.call(d.call(arguments,0
 }},writable:true});Object.defineProperty(Function.prototype,"bindArgsBefore",{value:function(){var b=this;
 var d=Array.prototype.slice;var c=Array.prototype.concat;var a=d.call(arguments);
 return function(){return b.apply(this,arguments.length?c.call(a,d.call(arguments,0)):a)
-}},writable:true});"use strict";function EventListener(b,c,a){this._event=b;this._callback=c;
-this._phase=(a=="capture"?true:(a=="bubble"?false:a))}EventListener.define({add:function(a){a.addEventListener(this._event,this._callback,this._phase);
+}},writable:true});"use strict";Object.defineProperty(Number,"isNumber",{value:function(a){return typeof a=="number"||a instanceof Number
+},writable:true});"use strict";Object.defineProperty(Boolean,"isBoolean",{value:function(a){return typeof a=="boolean"||a instanceof Boolean
+},writable:true});if(typeof window!="undefined"&&typeof require=="undefined"){window.require=function(){}
+}"use strict";function EventListener(b,c,a){this._event=b;this._callback=c;this._phase=(a=="capture"?true:(a=="bubble"?false:a))
+}EventListener.define({add:function(a){a.addEventListener(this._event,this._callback,this._phase);
 return this},once:function(b){var c=this;var a=function(){b.removeEventListener(c._event,a,c._phase);
 return c._callback.apply(this,arguments)};b.addEventListener(this._event,a,this._phase);
 return this},remove:function(a){a.removeEventListener(this._event,this._callback,this._phase);

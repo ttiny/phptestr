@@ -1,5 +1,8 @@
 function OpenSourceButton ( button ) {
 	button.on( 'click', function ( e ) {
+		if ( button.hasState( 'disabled' ) ) {
+			return;
+		}
 		Panels.getView().sourceview.open();
 	} );
 }

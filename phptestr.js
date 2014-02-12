@@ -9,6 +9,8 @@ var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.re
 var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
 
 
+process.chdir( __dirname );
+
 /// this is used in browser mode
 
 //var tmpl1 = Fs.readFileSync( __dirname + '/view/header.html' );
