@@ -350,7 +350,7 @@ Optional. Path to file or directory with php.ini configuration. This will be pas
 -port=portnumber
 ```
 Optional, only supported in GUI mode. Will make phptestr listen for browser commands on a different host (ip)
-and port. Defaults to 127.0.0.1:3355 .
+and port. Defaults to port 3355 on all hosts.
 
 
 
