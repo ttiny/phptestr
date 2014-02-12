@@ -16,7 +16,7 @@ function SourceView () {
 	this._title = this.findView( '#title' );
 }
 
-SourceView.RE_NOHL = /^[ \t\(\);\{\}\[\]]*$/;
+SourceView.RE_NOHL = /^[ \t\(\);,\{\}\[\]]*$/;
 
 SourceView.extend( View.Panel, {
 	open: function () {
