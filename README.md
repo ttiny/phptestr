@@ -62,7 +62,7 @@ Table of contents
 
 Status
 ------
-**This is release version 1.0**, stable release, tested under Windows and OSX.
+**This is release version 1.0**, stable release, tested under Windows, OSX and Linux.
 
 
 
