@@ -8,7 +8,7 @@ var FILTER = QUERY.filter;
 
 
 function _getCoverageFiles ( result, casei ) {
-	var ret = {};
+	var ret = { Cov: {}, Rel: {} };
 	var i = (casei === true ? result.Cases.length - 1 : casei);
 	for (; i >= 0; --i ) {
 		if ( casei !== true && i !== casei ) {
@@ -19,12 +19,13 @@ function _getCoverageFiles ( result, casei ) {
 			continue;
 		}
 		for ( var key in casea.Coverage ) {
-			if ( ret[key] === undefined ) {
-				ret[key] = casea.Coverage[key];
+			if ( ret.Cov[key] === undefined ) {
+				ret.Cov[key] = casea.Coverage[key];
 			}
 			else {
-				ret[key] = ret[key].concat( casea.Coverage[key] );
+				ret.Cov[key] = ret.Cov[key].concat( casea.Coverage[key] );
 			}
+			ret.Rel[key] = casea.CoverageRel[key];
 		}
 	}
 	return ret;

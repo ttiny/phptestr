@@ -2,7 +2,7 @@ function TraceLink ( link ) {
 	link.on( 'click', function () {
 		var trace = link.getData();
 		var panels = Panels.getView();
-		panels.sourceview.load( trace.file, trace.line, true );
+		panels.sourceview.load( trace.file, trace.line, true, trace.fileRel );
 	} );
 }
 
@@ -33,7 +33,7 @@ function TraceView ( sourceview, trace ) {
 	this.setClass( 'TraceView' );
 	this.setLayout( 'VerticalFlex' );
 	this.addView( $T( 'Tmpl.TraceView', trace ) );
-	sourceview.load( trace[0].file, trace[0].line, true );
+	sourceview.load( trace[0].file, trace[0].line, true, trace[0].fileRel );
 	//sourceview.setState( 'info' );
 }
 

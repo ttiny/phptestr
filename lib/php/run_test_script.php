@@ -19,8 +19,15 @@ ini_set( 'error_log', $logfn );
 ini_set( 'log_errors', 'On' );
 ini_set( 'log_errors_max_len', 0 );
 ini_set( 'display_errors', 'Off' );
-ini_set( 'xdebug.coverage_enable', $_SERVER['argv'][ 4 ] == 'coverage' ? 'On' : 'Off' );
+ini_set( 'xdebug.coverage_enable', $_SERVER['argv'][ 4 ] == 'coverage' ? 1 : 0 );
+ini_set( 'xdebug.default_enable', 0 );
+ini_set( 'xdebug.show_exception_trace', 0 );
+ini_set( 'xdebug.auto_trace', 0 );
+if ( function_exists( 'xdebug_disable' ) ) {
+	 xdebug_disable();
+}
 error_reporting( E_ALL ^ E_NOTICE );
+
 
 // make sure this bullshit is not causing errors because it is likely that in cli mode (at least on windows) the ini setting is not present
 $tz = ini_get( 'date.timezone' );

@@ -42,13 +42,14 @@
 	var code = {}.merge( trace );
 	delete code.file;
 	delete code.line;
+	delete code.fileRel;
 	code = _stringify( code );
 	if ( code == '{}' ) {
 		code = '';
 	}
 	%>
 	<AccordionItem <%= i == 0 ? ' state="active"' : ''%>>
-		<Label class="AccordionItemTitle" text="<%! trace.file %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, line: trace.line } ) %>" />
+		<Label class="AccordionItemTitle" text="<%! trace.fileRel %> @<%! trace.line %>" behavior="TraceLink" data="<%= $bind( { file: trace.file, fileRel: trace.fileRel, line: trace.line } ) %>" />
 		<CodeBlock><![CDATA[<%= hljs.highlight( 'javascript', code ).value %>]]></CodeBlock>
 	</AccordionItem>
 <% } ); %>
@@ -78,9 +79,10 @@
 		%><AccordionItem state="active">
 			<Label class="AccordionItemTitle" text="Combined coverage" /><%
 			var files = _getCoverageFiles( data, true );
-			var sorted = Object.keys( files ).sort();
+			var sorted = Object.keys( files.Cov ).sort();
 			sorted.forEach( function ( file ) {
-				%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+				var rel = files.Rel[file];
+				%><Link text="<%! rel %>" behavior="CoverageLink" data="<%= $bind( { file: file, fileRel: rel, lines: files.Cov[file] } ) %>" /><%
 			} );
 		%></AccordionItem><%
 	}
@@ -92,12 +94,13 @@
 			continue;
 		}
 		var files = _getCoverageFiles( data, i );
-		var sorted = Object.keys( files ).sort();
+		var sorted = Object.keys( files.Cov ).sort();
 		
 		%><AccordionItem<%= cases == 1 && i == 0 ? ' state="active"' : '' %>>
 			<Label class="AccordionItemTitle" text="<%! casea.Name %>" /><%
 			sorted.forEach( function ( file ) {
-				%><Link text="<%! file %>" behavior="CoverageLink" data="<%= $bind( { file: file, lines: files[file] } ) %>" /><%
+				var rel = files.Rel[file];
+				%><Link text="<%! rel %>" behavior="CoverageLink" data="<%= $bind( { file: file, fileRel: rel, lines: files.Cov[file] } ) %>" /><%
 			} );
 		%></AccordionItem><%
 	}
@@ -161,7 +164,7 @@
 			}
 		} %>
 		<div class="errdetails">
-			<%! err.Type %>: <%! err.File %>@<%! err.Line %>
+			<%! err.Type %>: <%! err.FileRel %>@<%! err.Line %>
 			<% if ( scriptline ) { %>
 				(@line <span class="line"><%! scriptline %></span>)
 			<% } %>

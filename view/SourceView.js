@@ -23,7 +23,7 @@ SourceView.extend( View.Panel, {
 		this._open = new HttpRequest( '/open?' + HttpRequest.urlEncode( { file: this._file } ) ).send();
 	},
 
-	load: function ( file, lines, scrollintoview ) {
+	load: function ( file, lines, scrollintoview, fileRel ) {
 		if ( this._load ) {
 			return false;
 		}
@@ -32,7 +32,7 @@ SourceView.extend( View.Panel, {
 			return true;
 		}
 		var that = this;
-		this._title.setText( file );
+		this._title.setText( fileRel || file );
 		this._file = file;
 		this._lines = false;
 		that._loaded = false;

@@ -2,7 +2,7 @@ function CoverageLink ( link ) {
 	link.on( 'click', function () {
 		var coverage = link.getData();
 		var panels = Panels.getView();
-		panels.sourceview.load( coverage.file, coverage.lines );
+		panels.sourceview.load( coverage.file, coverage.lines, false, coverage.fileRel );
 	} );
 }
 
@@ -34,7 +34,8 @@ function CoverageView ( sourceview, result ) {
 	this.setClass( 'CoverageView' );
 	this.setLayout( 'VerticalFlex' );
 	this.addView( $T( 'Tmpl.CoverageView', result ) );
-	sourceview.load( result.Script, _getCoverageFiles( result, true )[result.Script] );
+	var files = _getCoverageFiles( result, true );
+	sourceview.load( result.Script, files.Cov[result.Script], false, files.Rel[result.Script] );
 }
 
 CoverageView.extend( View.Panel );
