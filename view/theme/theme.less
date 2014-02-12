@@ -53,6 +53,17 @@
 	border-color: darken( @state-danger-border, 50% );
 }
 
+.SourceView code {
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.SourceView code ol {
+	.flex-shrink( 0 );
+	.flex-grow( 1 );
+}
+
 /*
 .TraceView .AccordionItem.active {
 	

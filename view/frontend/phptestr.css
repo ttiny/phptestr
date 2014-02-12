@@ -527,3 +527,5 @@ to{-webkit-transform:rotate(360deg);-moz-transform:rotate(360deg);-ms-transform:
 #Tests .AccordionItem>.View:not(.AccordionItemTitle)>.error{background-color:#f9d7d7;color:#df2522;border-color:#bb0624;}
 #Tests .AccordionItem .case{background-color:#c1e2b3;color:#356635;border-color:#bbdba1;}
 #Tests .AccordionItem .case.failed{background-color:#b51c1c;color:#ffffff;border-color:#8b3745;}
+.SourceView code{display:-webkit-flex;display:-ms-flexbox;display:flex;}
+.SourceView code ol{-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;}
