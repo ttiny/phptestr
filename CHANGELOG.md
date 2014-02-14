@@ -2,8 +2,8 @@
 ---
 
 - phptestr can be started without any arguments and it will autodetect `phptestr.json` in the working directory.
-- Added `-noexit`.
-- Added `-remotemode`.
+- Added `-noexit` option.
+- Added `-remotemode` option.
 - `-target` can accept full path to json file, not only directory.
 - Misc GUI improvements and fixes.
 
@@ -13,8 +13,8 @@
 - New UI based on [docviewjs](https://github.com/Perennials/docviewjs).
 - Added stack traces display in the UI.
 - Added code coverage support via xdebug.
-- Added -coverage option.
-- Added -phpini option.
+- Added `-coverage` option.
+- Added `-phpini` option.
 - Added default configuration in phptestr/phptestr.json.
 - Added the ability to configure the PHP installation in use from phptestr.json.
 
