@@ -366,6 +366,10 @@ automation.
 Optional. Will not start a browser and the "Open" button for scripts in the GUI
 will be disabled. This is so phptestr can be run on remote machine.
 
+```
+-noexit
+```
+Optional. Will hide the exit button from the UI, for use with remote mode.
 
 ```
 -phpbin=path

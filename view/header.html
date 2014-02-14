@@ -22,7 +22,9 @@
 			<Accordion id="Failed" behaviour="" />
 			<Accordion id="Passed" behaviour="" />
 		</View>
+		<% if ( !Argv.noexit ) {  %>
 		<Button text="Exit" id="Exit" state="inverse" />
+		<% } %>
 	</AppView>
 </script>
 

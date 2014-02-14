@@ -143,12 +143,15 @@ else {
 	var app = new App();
 	app.view = $T( 'Tmpl.AppView' );
 
-	app.view.findView( '#Exit' ).on( 'click', function () {
-		var btn = this;
-		new HttpRequest( '/exit', function () {
-			app.view.removeView( btn );
-			Exit();
-		} ).send();
-	} );
+	var exitBtn = app.view.findView( '#Exit' );
+	if ( exitBtn ) {
+		exitBtn.on( 'click', function () {
+			var btn = this;
+			new HttpRequest( '/exit', function () {
+				app.view.removeView( btn );
+				Exit();
+			} ).send();
+		} );
+	}
 
 }

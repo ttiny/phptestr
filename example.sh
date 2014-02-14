@@ -1,1 +1,1 @@
-./phptestr -target=example
+./phptestr -target=example $@
