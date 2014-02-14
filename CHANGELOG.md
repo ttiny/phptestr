@@ -2,6 +2,10 @@
 ---
 
 - phptestr can be started without any arguments and it will autodetect `phptestr.json` in the working directory.
+- Added `-noexit`.
+- Added `-remotemode`.
+- `-target` can accept full path to json file, not only directory.
+- Misc GUI improvements and fixes.
 
 1.0
 ---

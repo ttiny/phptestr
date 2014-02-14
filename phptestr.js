@@ -9,8 +9,6 @@ var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.re
 var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
 
 
-process.chdir( __dirname );
-
 /// this is used in browser mode
 
 //var tmpl1 = Fs.readFileSync( __dirname + '/view/header.html' );
@@ -112,7 +110,7 @@ function OnScriptRunResult ( script, result ) {
 
 var Platform = require( argv.cli ? './lib/CliHost.js' : './lib/HttpHost.js' );
 
-if ( !argv.target && Fs.existsSync( './phptestr.json' ) ) {
+if ( !argv.target && process.cwd() != __dirname && Fs.existsSync( './phptestr.json' ) ) {
 	argv.target = '.';
 }
 

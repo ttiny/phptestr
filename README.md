@@ -340,10 +340,11 @@ phptestr [OPTIONS]
 Where **OPTIONS** is:
 
 ```
--target=directory
+-target=directory|file
 ```
-Directory where to look for tests or phptestr.json. Optional when starting in
-GUI mode as it can be chosen from the browser.
+Directory where to look for tests or phptestr.json or the full path to the
+json file. Optional when starting in GUI mode as it can be chosen from the
+browser.
 
 
 ```
