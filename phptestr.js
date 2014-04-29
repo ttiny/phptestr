@@ -2,11 +2,11 @@
 
 var clr = require( './lib/CliColors.js' );
 var TestHost = require( './lib/php/TestHost.js' );
-var ArgvUtils = require( 'ArgvUtils' );
-var PathUtils = require( 'PathUtils' );
+var ArgvUtils = require( 'Utils/Argv' );
+var PathUtils = require( 'Utils/Path' );
 var Fs = require( 'fs' );
 var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.readFileSync( __dirname + '/phptestr.json', 'utf8' ) ) : {};
-var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
+var argv = defaults.merge( ArgvUtils.parse() || {} );
 
 
 /// this is used in browser mode

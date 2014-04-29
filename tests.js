@@ -1,11 +1,11 @@
 "use strict";
 
 var TestHost = require( './lib/php/TestHost.js' );
-var ArgvUtils = require( 'ArgvUtils' );
+var ArgvUtils = require( 'Utils/Argv' );
 var Path = require( 'path' );
 var Fs = require( 'fs' );
 var defaults = Fs.existsSync( __dirname + '/phptestr.json' ) ? JSON.parse( Fs.readFileSync( __dirname + '/phptestr.json', 'utf8' ) ) : {};
-var argv = defaults.merge( ArgvUtils.parseArgs() || {} );
+var argv = defaults.merge( ArgvUtils.parse() || {} );
 
 function CompareResults ( file, results, expected, ret ) {
 	var compare = results.duplicate();
