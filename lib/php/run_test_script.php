@@ -41,7 +41,7 @@ require_once __DIR__ . '/test_environment.php';
 testLogFn( $logfn );
 unset( $logfn );
 
-if ( !empty( $_SERVER['argv'][ 3 ] ) ) {
+if ( !empty( $_SERVER['argv'][ 3 ] ) && file_exists( $_SERVER['argv'][ 3 ] ) ) {
 	require_once $_SERVER['argv'][ 3 ];
 }
 
